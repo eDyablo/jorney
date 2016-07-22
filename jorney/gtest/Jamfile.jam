@@ -1,0 +1,14 @@
+SubDir TOP jorney gtest ;
+
+gtest.dir.root = [ FDirName $(TOP) googletest googletest ] ;
+gtest.dir.src = [ FDirName $(gtest.dir.root) src ] ;
+gtest.dir.include = [ FDirName $(gtest.dir.root) include ] ;
+gtest.dir.lib = [ FDirName $(gtest.dir.root) lib ] ;
+
+C.IncludeDirectories gtest : $(gtest.dir.include) $(gtest.dir.root) ;
+LOCATE_TARGET = [ FDirName $(SUBDIR) build $(PLATFORM) $(CONFIG) ] ;
+C.Library gtest : $(gtest.dir.src)/gtest-all.cc ;
+
+C.IncludeDirectories gtest-main : $(gtest.dir.include) $(gtest.dir.root) ;
+LOCATE_TARGET = [ FDirName $(SUBDIR) build $(PLATFORM) $(CONFIG) ] ;
+C.Library gtest-main : $(gtest.dir.src)/gtest_main.cc ;

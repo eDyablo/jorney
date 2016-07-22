@@ -1,1 +1,5 @@
 SubDir TOP jorney ;
+
+ALL_LOCATE_TARGET = [ FDirName $(TOP) jorney build $(PLATFORM) $(CONFIG) ] ;
+
+SubInclude TOP jorney gtest ;
