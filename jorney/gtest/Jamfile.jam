@@ -18,7 +18,7 @@ rule GTest.Use TARGET : OPTIONS
 	C.IncludeDirectories $(TARGET) : $(gtest.dir.include) ;
 	if link in $(OPTIONS)
 	{
-		C.LinkLibraries $(TARGET) : gtest ;	
+		C.LinkLibraries $(TARGET) : gtest ;
 	}
 }
 
