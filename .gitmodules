@@ -1,0 +1,3 @@
+[submodule "jamplus"]
+	path = jamplus
+	url = https://github.com/jamplus/jamplus.git
