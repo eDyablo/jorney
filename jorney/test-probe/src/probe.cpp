@@ -1,9 +1,11 @@
-#include "gtest/gtest.h"
+#include "gmock/gmock.h"
+
+using namespace ::testing;
 
 TEST(Probe, Success) {
-	ASSERT_TRUE(true);
+	ASSERT_THAT(0, Eq(0));
 }
 
 TEST(Probe, Fail) {
-	ASSERT_TRUE(false);
+	ASSERT_THAT(0, Eq(1));
 }

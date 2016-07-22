@@ -1,5 +1,6 @@
 SubDir TOP jorney test-probe ;
 
+GMock.Use test-probe ;
 GTest.UseMain test-probe ;
 
 LOCATE_TARGET = [ FDirName $(SUBDIR) build $(PLATFORM) $(CONFIG) ] ;

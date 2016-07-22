@@ -1,0 +1,21 @@
+SubDir TOP jorney gmock ;
+
+gmock.dir.root = [ FDirName $(TOP) googletest googlemock ] ;
+gmock.dir.src = [ FDirName $(gmock.dir.root) src ] ;
+gmock.dir.include = [ FDirName $(gmock.dir.root) include ] ;
+gmock.dir.lib = [ FDirName $(gmock.dir.root) lib ] ;
+
+C.IncludeDirectories gmock : $(gmock.dir.include) $(gmock.dir.root) ;
+GTest.Use gmock ;
+LOCATE_TARGET = [ FDirName $(SUBDIR) build $(PLATFORM) $(CONFIG) ] ;
+C.Library gmock : $(gmock.dir.src)/gmock-all.cc ;
+
+rule GMock.Use TARGET : OPTIONS
+{
+	GTest.Use $(TARGET) ;
+	C.IncludeDirectories $(TARGET) : $(gmock.dir.include) ;
+	if link in $(OPTIONS)
+	{
+		C.LinkLibraries $(TARGET) : gmock ;
+	}
+}
