@@ -1,0 +1,6 @@
+SubDir TOP jorney test-probe ;
+
+GTest.UseMain test-probe ;
+
+LOCATE_TARGET = [ FDirName $(SUBDIR) build $(PLATFORM) $(CONFIG) ] ;
+C.Application test-probe : src/probe.cpp ;
