@@ -5,25 +5,25 @@ gtest.dir.src = [ FDirName $(gtest.dir.root) src ] ;
 gtest.dir.include = [ FDirName $(gtest.dir.root) include ] ;
 gtest.dir.lib = [ FDirName $(gtest.dir.root) lib ] ;
 
-C.IncludeDirectories gtest : $(gtest.dir.include) $(gtest.dir.root) ;
+C.IncludeDirectories gtest.lib : $(gtest.dir.include) $(gtest.dir.root) ;
 LOCATE_TARGET = [ FDirName $(SUBDIR) build $(PLATFORM) $(CONFIG) ] ;
-C.Library gtest : $(gtest.dir.src)/gtest-all.cc ;
+C.Library gtest.lib : $(gtest.dir.src)/gtest-all.cc ;
 
-C.IncludeDirectories gtest-main : $(gtest.dir.include) $(gtest.dir.root) ;
+C.IncludeDirectories gtest-main.lib : $(gtest.dir.include) $(gtest.dir.root) ;
 LOCATE_TARGET = [ FDirName $(SUBDIR) build $(PLATFORM) $(CONFIG) ] ;
-C.Library gtest-main : $(gtest.dir.src)/gtest_main.cc ;
+C.Library gtest-main.lib : $(gtest.dir.src)/gtest_main.cc ;
 
 rule GTest.Use TARGET : OPTIONS
 {
 	C.IncludeDirectories $(TARGET) : $(gtest.dir.include) ;
 	if link in $(OPTIONS)
 	{
-		C.LinkLibraries $(TARGET) : gtest ;
+		C.LinkLibraries $(TARGET) : gtest.lib ;
 	}
 }
 
 rule GTest.UseMain TARGET
 {
 	GTest.Use $(TARGET) : link ;
-	C.LinkLibraries $(TARGET) : gtest-main ;
+	C.LinkLibraries $(TARGET) : gtest-main.lib ;
 }
