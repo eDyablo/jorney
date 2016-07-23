@@ -4,6 +4,5 @@ ALL_LOCATE_TARGET = [ FDirName $(TOP) jorney build ] ;
 
 SubInclude TOP jorney gtest ;
 SubInclude TOP jorney gmock ;
-SubInclude TOP jorney test-probe ;
 SubInclude TOP jorney soundex ;
 SubInclude TOP jorney turnstile ;
