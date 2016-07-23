@@ -1,0 +1,3 @@
+#!/bin/sh
+scriptDir=`dirname $0`
+$scriptDir/jamplus/bin/macosx32/jam $*
