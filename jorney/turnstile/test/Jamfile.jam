@@ -1,0 +1,11 @@
+SubDir TOP jorney turnstile test ;
+
+GMock.Use turnstile.test.app ;
+GTest.UseMain turnstile.test.app ;
+
+C.IncludeDirectories turnstile.test.app : $(turnstile.dir.include) ;
+
+C.LinkLibraries turnstile.test.app : turnstile.lib ;
+
+LOCATE_TARGET = [ FDirName $(SUBDIR) build $(PLATFORM) $(CONFIG) ] ;
+C.Application turnstile.test.app : @($(SUBDIR)/src/**.cpp:W=$(SUBDIR)/) ;

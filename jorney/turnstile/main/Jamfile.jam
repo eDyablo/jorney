@@ -1,0 +1,9 @@
+SubDir TOP jorney turnstile main ;
+
+turnstile.dir.root = [ FDirName $(TOP) jorney turnstile main ] ;
+turnstile.dir.include = [ FDirName $(turnstile.dir.root) include ] ;
+
+C.IncludeDirectories turnstile.lib : $(turnstile.dir.include) ;
+
+LOCATE_TARGET = [ FDirName $(SUBDIR) build $(PLATFORM) $(CONFIG) ] ;
+C.Library turnstile.lib : @($(SUBDIR)/src/**.cpp:W=$(SUBDIR)/) ;

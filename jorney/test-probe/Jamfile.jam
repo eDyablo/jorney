@@ -1,7 +1,7 @@
 SubDir TOP jorney test-probe ;
 
-GMock.Use test-probe ;
-GTest.UseMain test-probe ;
+GMock.Use test-probe.app ;
+GTest.UseMain test-probe.app ;
 
 LOCATE_TARGET = [ FDirName $(SUBDIR) build $(PLATFORM) $(CONFIG) ] ;
-C.Application test-probe : src/probe.cpp ;
+C.Application test-probe.app : src/probe.cpp ;
