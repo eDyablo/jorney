@@ -1,0 +1,15 @@
+SubDir TOP jorney soundex test ;
+
+GMock.Use soundex.test.app ;
+GTest.UseMain soundex.test.app ;
+
+C.IncludeDirectories soundex.test.app : include ;
+
+C.C++Flags soundex.test.app : -std=c++11 -stdlib=libc++ ;
+
+C.IncludeDirectories soundex.test.app : $(soundex.dir.include) ;
+
+C.LinkLibraries : soundex.lib ;
+
+LOCATE_TARGET = [ FDirName $(SUBDIR) build $(PLATFORM) $(CONFIG) ] ;
+C.Application soundex.test.app : @($(SUBDIR)/src/**.cpp:W=$(SUBDIR)/) ;

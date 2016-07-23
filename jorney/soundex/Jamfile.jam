@@ -1,0 +1,4 @@
+SubDir TOP jorney soundex ;
+
+SubInclude TOP jorney soundex main ;
+SubInclude TOP jorney soundex test ;

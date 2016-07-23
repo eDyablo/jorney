@@ -1,0 +1,11 @@
+SubDir TOP jorney soundex main ;
+
+soundex.dir.root = [ FDirName $(TOP) jorney soundex main ] ;
+soundex.dir.include = [ FDirName $(soundex.dir.root) include ] ;
+
+C.IncludeDirectories soundex.lib : include ;
+
+C.C++Flags soundex.lib : -std=c++11 -stdlib=libc++ ;
+
+LOCATE_TARGET = [ FDirName $(SUBDIR) build $(PLATFORM) $(CONFIG) ] ;
+C.Library soundex.lib : @($(SUBDIR)/src/**.cpp:W=$(SUBDIR)/) ;
