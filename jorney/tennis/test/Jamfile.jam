@@ -1,0 +1,15 @@
+SubDir TOP jorney tennis test ;
+
+GMock.Use tennis.test.app : link ;
+GTest.UseMain tennis.test.app ;
+
+C.IncludeDirectories tennis.test.app : include ;
+
+C.IncludeDirectories tennis.test.app : $(tennis.dir.include) ;
+
+C.LinkLibraries : tennis.lib ;
+
+C.C++Flags tennis.test.app : -std=c++11 -stdlib=libc++ ;
+
+LOCATE_TARGET = [ FDirName $(SUBDIR) build $(PLATFORM) $(CONFIG) ] ;
+C.Application tennis.test.app : @($(SUBDIR)/src/**.cpp:W=$(SUBDIR)/) ;

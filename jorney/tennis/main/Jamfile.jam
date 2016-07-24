@@ -1,0 +1,9 @@
+SubDir TOP jorney tennis main ;
+
+tennis.dir.root = $(SUBDIR) ;
+tennis.dir.include = [ FDirName $(tennis.dir.root) include ] ;
+
+C.IncludeDirectories tennis.lib : include ;
+
+LOCATE_TARGET = [ FDirName $(tennis.dir.root) build $(PLATFORM) $(CONFIG) ] ;
+C.Library tennis.lib : @($(tennis.dir.root)/src/**.cpp:W=$(tennis.dir.root)/) ;
