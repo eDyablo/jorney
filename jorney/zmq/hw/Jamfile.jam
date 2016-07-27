@@ -10,7 +10,10 @@ Depends zmq.hw :
 		zmq.hw.client.app
 		;
 
-Depends clean:zmq.hw :
+Depends clean : clean:zmq.hw :
 		clean:zmq.hw.server.app
 		clean:zmq.hw.client.app
 		;
+
+MakeLocate zmq.hw : [ FDirName $(zmq.hw.dir.root) build $(PLATFORM) $(CONFIG) ] ;
+ZeroMQ.Use zmq.hw : install ;
