@@ -1,0 +1,16 @@
+SubDir TOP jorney zmq hw ;
+
+zmq.hw.dir.root = $(SUBDIR) ;
+
+SubInclude TOP jorney zmq hw server ;
+SubInclude TOP jorney zmq hw client ;
+
+Depends zmq.hw :
+		zmq.hw.server.app
+		zmq.hw.client.app
+		;
+
+Depends clean:zmq.hw :
+		clean:zmq.hw.server.app
+		clean:zmq.hw.client.app
+		;

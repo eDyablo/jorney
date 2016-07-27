@@ -1,0 +1,33 @@
+SubDir TOP jorney zmq ;
+
+zeromq.dir.root = [ FDirName $(TOP) zeromq ] ;
+zeromq.dir.include = [ FDirName $(zeromq.dir.root) libzmq include ] ;
+zeromq.cppzmq.dir.include = [ FDirName $(zeromq.dir.root) cppzmq ] ;
+
+if $(PLATFORM) = win32
+{
+	if $(CONFIG) = release
+	{
+		zeromq.dir.library = [ FDirName $(zeromq.dir.root) bin Win32 Release v100 dynamic ] ;
+	}
+	if $(CONFIG) = debug
+	{
+		zeromq.dir.library = [ FDirName $(zeromq.dir.root) bin Win32 Debug v100 dynamic ] ;
+	}
+}
+if $(PLATFORM) = win64
+{
+	if $(CONFIG) = release
+	{
+		zeromq.dir.library = [ FDirName $(zeromq.dir.root) bin x64 Release v100 dynamic ] ;
+	}
+	if $(CONFIG) = debug
+	{
+		zeromq.dir.library = [ FDirName $(zeromq.dir.root) bin x64 Debug v100 dynamic ] ;
+	}
+}
+
+BINDING on libzmq.dll = [ FDirName $(zeromq.dir.library) libzmq.dll ] ;
+BINDING on libzmq.pdb = [ FDirName $(zeromq.dir.library) libzmq.pdb ] ;
+
+SubInclude TOP jorney zmq hw ;
