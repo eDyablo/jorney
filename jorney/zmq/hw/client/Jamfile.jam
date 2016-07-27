@@ -1,0 +1,27 @@
+SubDir TOP jorney zmq hw client main ;
+
+zmq.hw.client.dir.root = $(SUBDIR) ;
+
+C.IncludeDirectories zmq.hw.client.app :
+		$(zeromq.cppzmq.dir.include)
+		$(zeromq.dir.include)
+		;
+
+C.LinkDirectories zmq.hw.client.app :
+		$(zeromq.dir.library)
+		;
+
+C.LinkPrebuiltLibraries zmq.hw.client.app :
+		libzmq.lib
+		;
+
+LOCATE_TARGET = [ FDirName $(zmq.hw.dir.root) build $(PLATFORM) $(CONFIG) ] ;
+C.Application zmq.hw.client.app :
+		@($(zmq.hw.client.dir.root)/src/**.cpp:W=$(zmq.hw.client.dir.root)/) ;
+
+CopyFile zmq.hw.client.app : $(LOCATE_TARGET)/@(libzmq.dll:TBS) : @(libzmq.dll:T) ;
+
+if $(CONFIG) = debug
+{
+	CopyFile zmq.hw.client.app : $(LOCATE_TARGET)/@(libzmq.pdb:TBS) : @(libzmq.pdb:T) ;
+}
