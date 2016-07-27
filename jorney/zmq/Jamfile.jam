@@ -30,4 +30,28 @@ if $(PLATFORM) = win64
 BINDING on libzmq.dll = [ FDirName $(zeromq.dir.library) libzmq.dll ] ;
 BINDING on libzmq.pdb = [ FDirName $(zeromq.dir.library) libzmq.pdb ] ;
 
+rule ZeroMQ.Use TARGET : OPTIONS
+{
+	C.IncludeDirectories $(TARGET) :
+		$(zeromq.cppzmq.dir.include)
+		$(zeromq.dir.include)
+		;
+	if link in $(OPTIONS)
+	{
+		C.LinkDirectories $(TARGET) : $(zeromq.dir.library)	;
+		C.LinkPrebuiltLibraries $(TARGET) : libzmq.lib ;
+	}
+	if install in $(OPTIONS)
+	{
+		on $(TARGET) location = $(LOCATE) ;
+		CopyFile $(TARGET) : $(location)/@(libzmq.dll:TBS) : @(libzmq.dll:T) ;
+		Clean clean:$(TARGET) : $(location)/@(libzmq.dll:TBS) ;
+		if $(CONFIG) = debug
+		{
+			CopyFile $(TARGET) : $(location)/@(libzmq.pdb:TBS) : @(libzmq.pdb:T) ;
+			Clean clean:$(TARGET) : $(location)/@(libzmq.pdb:TBS) ;
+		}
+	}
+}
+
 SubInclude TOP jorney zmq hw ;
