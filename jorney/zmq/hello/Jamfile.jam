@@ -4,3 +4,13 @@ zmq.hello.dir.root = $(SUBDIR) ;
 
 SubInclude TOP jorney zmq hello cpp ;
 SubInclude TOP jorney zmq hello csharp ;
+
+Depends zmq.hello :
+		zmq.hello.cpp
+		zmq.hello.csharp
+		;
+
+Depends clean : clean:zmq.hello :
+		clean:zmq.hello.cpp
+		clean:zmq.hello.csharp
+		;
