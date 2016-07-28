@@ -1,0 +1,16 @@
+SubDir TOP jorney zmq hello csharp ;
+
+zmq.hello.csharp.dir.root = $(SUBDIR) ;
+
+SubInclude TOP jorney zmq hello csharp server ;
+
+Depends zmq.hello.csharp :
+		zmq.hello.csharp.server.app
+		;
+
+Depends clean : clean:zmq.hello.csharp :
+		clean:zmq.hello.csharp.server.app
+		;
+
+MakeLocate zmq.hello.csharp : [ FDirName $(zmq.hello.csharp.dir.root) build $(PLATFORM) $(CONFIG) ] ;
+ZeroMQ.CLR.Use zmq.hello.csharp : install ;
