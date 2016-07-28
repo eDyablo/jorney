@@ -1,0 +1,19 @@
+SubDir TOP jorney zmq hello ;
+
+zmq.hello.dir.root = $(SUBDIR) ;
+
+SubInclude TOP jorney zmq hello server ;
+SubInclude TOP jorney zmq hello client ;
+
+Depends zmq.hello :
+		zmq.hello.server.app
+		zmq.hello.client.app
+		;
+
+Depends clean : clean:zmq.hello :
+		clean:zmq.hello.server.app
+		clean:zmq.hello.client.app
+		;
+
+MakeLocate zmq.hello : [ FDirName $(zmq.hello.dir.root) build $(PLATFORM) $(CONFIG) ] ;
+ZeroMQ.Use zmq.hello : install ;

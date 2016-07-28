@@ -1,9 +1,0 @@
-SubDir TOP jorney zmq hw server main ;
-
-zmq.hw.server.dir.root = $(SUBDIR) ;
-
-ZeroMQ.Use zmq.hw.server.app : link ;
-
-LOCATE_TARGET = [ FDirName $(zmq.hw.dir.root) build $(PLATFORM) $(CONFIG) ] ;
-C.Application zmq.hw.server.app :
-		@($(zmq.hw.server.dir.root)/src/**.cpp:W=$(zmq.hw.server.dir.root)/) ;

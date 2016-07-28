@@ -54,4 +54,4 @@ rule ZeroMQ.Use TARGET : OPTIONS
 	}
 }
 
-SubInclude TOP jorney zmq hw ;
+SubInclude TOP jorney zmq hello ;
