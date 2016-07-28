@@ -1,9 +1,0 @@
-SubDir TOP jorney zmq hello server main ;
-
-zmq.hello.server.dir.root = $(SUBDIR) ;
-
-ZeroMQ.Use zmq.hello.server.app : link ;
-
-LOCATE_TARGET = [ FDirName $(zmq.hello.dir.root) build $(PLATFORM) $(CONFIG) ] ;
-C.Application zmq.hello.server.app :
-		@($(zmq.hello.server.dir.root)/src/**.cpp:W=$(zmq.hello.server.dir.root)/) ;
