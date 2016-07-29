@@ -1,0 +1,9 @@
+SubDir TOP jorney zmq weather ;
+
+zmq.weather.dir.root = $(SUBDIR) ;
+
+SubInclude TOP jorney zmq weather cpp ;
+
+Depends zmq.weather :
+		zmq.weather.cpp
+		;

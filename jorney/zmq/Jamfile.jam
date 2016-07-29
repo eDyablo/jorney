@@ -80,3 +80,4 @@ rule ZeroMQ.CLR.Use TARGET : OPTIONS
 zmq.dir.root = $(SUBDIR) ;
 
 SubInclude TOP jorney zmq hello ;
+SubInclude TOP jorney zmq weather ;
