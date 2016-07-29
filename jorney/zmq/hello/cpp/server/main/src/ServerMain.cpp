@@ -15,6 +15,7 @@ int main() {
 		zmq::message_t reply (5);
 		::memcpy(reply.data (), "World", 5);
 		socket.send(reply);
+		::Sleep(1);
 	}
 	return 0;
 }
