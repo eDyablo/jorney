@@ -1,7 +1,8 @@
 SubDir TOP jorney zmq ;
 
 zeromq.dir.root = [ FDirName $(TOP) zeromq ] ;
-zeromq.dir.include = [ FDirName $(zeromq.dir.root) libzmq include ] ;
+zeromq.libzmq.dir.root = [ FDirName $(zeromq.dir.root) libzmq ] ;
+zeromq.libzmq.dir.include = [ FDirName $(zeromq.libzmq.dir.root) include ] ;
 zeromq.cppzmq.dir.include = [ FDirName $(zeromq.dir.root) cppzmq ] ;
 zeromq.clrzmq4.dir.root = [ FDirName $(zeromq.dir.root) clrzmq4 ] ;
 
@@ -9,38 +10,38 @@ if $(PLATFORM) = win32
 {
 	if $(CONFIG) = release
 	{
-		zeromq.dir.library = [ FDirName $(zeromq.dir.root) bin Win32 Release v100 dynamic ] ;
+		zeromq.libzmq.dir.library = [ FDirName $(zeromq.libzmq.dir.root) bin Win32 Release v140 dynamic ] ;
 	}
 	if $(CONFIG) = debug
 	{
-		zeromq.dir.library = [ FDirName $(zeromq.dir.root) bin Win32 Debug v100 dynamic ] ;
+		zeromq.libzmq.dir.library = [ FDirName $(zeromq.libzmq.dir.root) bin Win32 Debug v140 dynamic ] ;
 	}
 }
 if $(PLATFORM) = win64
 {
 	if $(CONFIG) = release
 	{
-		zeromq.dir.library = [ FDirName $(zeromq.dir.root) bin x64 Release v100 dynamic ] ;
+		zeromq.libzmq.dir.library = [ FDirName $(zeromq.libzmq.dir.root) bin x64 Release v140 dynamic ] ;
 	}
 	if $(CONFIG) = debug
 	{
-		zeromq.dir.library = [ FDirName $(zeromq.dir.root) bin x64 Debug v100 dynamic ] ;
+		zeromq.libzmq.dir.library = [ FDirName $(zeromq.libzmq.dir.root) bin x64 Debug v140 dynamic ] ;
 	}
 }
 
-BINDING on libzmq.dll = [ FDirName $(zeromq.dir.library) libzmq.dll ] ;
-BINDING on libzmq.pdb = [ FDirName $(zeromq.dir.library) libzmq.pdb ] ;
+BINDING on libzmq.dll = [ FDirName $(zeromq.libzmq.dir.library) libzmq.dll ] ;
+BINDING on libzmq.pdb = [ FDirName $(zeromq.libzmq.dir.library) libzmq.pdb ] ;
 
 rule ZeroMQ.Use TARGET : OPTIONS : DIRECTORY
 {
 	DIRECTORY = $(DIRECTORY:E="") ;
 	C.IncludeDirectories $(TARGET) :
 		$(zeromq.cppzmq.dir.include)
-		$(zeromq.dir.include)
+		$(zeromq.libzmq.dir.include)
 		;
 	if link in $(OPTIONS)
 	{
-		C.LinkDirectories $(TARGET) : $(zeromq.dir.library)	;
+		C.LinkDirectories $(TARGET) : $(zeromq.libzmq.dir.library)	;
 		C.LinkPrebuiltLibraries $(TARGET) : libzmq.lib ;
 	}
 	if install in $(OPTIONS)

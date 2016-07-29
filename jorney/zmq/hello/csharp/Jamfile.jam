@@ -2,6 +2,15 @@ SubDir TOP jorney zmq hello csharp ;
 
 zmq.hello.csharp.dir.root = $(SUBDIR) ;
 
+if $(PLATFORM) = win32
+{
+	csharp.flags = /platform:x86 ;
+}
+else if $(PLATFORM) = win64
+{
+	csharp.flags = /platform:x64 ;
+}
+
 SubInclude TOP jorney zmq hello csharp server ;
 SubInclude TOP jorney zmq hello csharp client ;
 

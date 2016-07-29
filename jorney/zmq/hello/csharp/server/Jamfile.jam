@@ -2,7 +2,7 @@ SubDir TOP jorney zmq hello csharp server ;
 
 zmq.hello.csharp.server.dir.root = $(SUBDIR) ;
 
-CSharp.CscFlags zmq.hello.csharp.server.app : /platform:x86 ;
+CSharp.CscFlags zmq.hello.csharp.server.app : $(csharp.flags) ;
 
 CSharp.ReferencePaths zmq.hello.csharp.server.app : $(zeromq.clrzmq4.dir.root)/Release ;
 
