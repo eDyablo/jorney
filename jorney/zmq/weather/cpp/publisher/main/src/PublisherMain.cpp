@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include "zmq.hpp"
+#include "basics/Thread.h"
 
 int main() {
 	zmq::context_t context(1);
@@ -19,7 +20,7 @@ int main() {
 				"%05d %d %d", zipcode, temperature, relhumidity);
 		publisher.send(message);
 		std::cout << zipcode << " " << temperature << " " << relhumidity << "\n";
-		::Sleep(10);
+		basics::msleep(50);
 	}
 	return 0;
 }
