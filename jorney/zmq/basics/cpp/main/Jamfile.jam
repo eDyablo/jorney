@@ -1,0 +1,18 @@
+SubDir TOP jorney zmq basics cpp main ;
+
+zmq.basics.cpp.dir.root = $(SUBDIR) ;
+zmq.basics.cpp.dir.include = [ FDirName $(zmq.basics.cpp.dir.root) include ] ;
+
+local sources ;
+
+if $(PLATFORM) in macosx32 macosx64
+{
+	sources += src/ThreadMacOSX.cpp ;
+}
+else if $(PLATFORM) in win32 win64
+{
+	sources += src/ThreadWin.cpp ;
+}
+
+LOCATE_TARGET = [ FDirName $(zmq.basics.cpp.dir.root) build $(PLATFORM) $(CONFIG) ] ;
+C.Library zmq.basics.cpp.lib : $(sources) ;

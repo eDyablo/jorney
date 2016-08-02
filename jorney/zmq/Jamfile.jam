@@ -32,6 +32,12 @@ if $(PLATFORM) = win64
 BINDING on libzmq.dll = [ FDirName $(zeromq.libzmq.dir.library) libzmq.dll ] ;
 BINDING on libzmq.pdb = [ FDirName $(zeromq.libzmq.dir.library) libzmq.pdb ] ;
 
+if $(PLATFORM) = macosx64
+{
+	zeromq.libzmq.dir.library = [ FDirName $(zeromq.libzmq.dir.root) bin macosx64 ] ;
+	BINDING on libzmq.dll = [ FDirName $(zeromq.libzmq.dir.library) libzmq.5.dylib ] ;
+}
+
 rule ZeroMQ.Use TARGET : OPTIONS : DIRECTORY
 {
 	DIRECTORY = $(DIRECTORY:E="") ;
@@ -42,7 +48,7 @@ rule ZeroMQ.Use TARGET : OPTIONS : DIRECTORY
 	if link in $(OPTIONS)
 	{
 		C.LinkDirectories $(TARGET) : $(zeromq.libzmq.dir.library)	;
-		C.LinkPrebuiltLibraries $(TARGET) : libzmq.lib ;
+		C.LinkPrebuiltLibraries $(TARGET) : zmq ;
 	}
 	if install in $(OPTIONS)
 	{
@@ -79,5 +85,6 @@ rule ZeroMQ.CLR.Use TARGET : OPTIONS
 
 zmq.dir.root = $(SUBDIR) ;
 
+SubInclude TOP jorney zmq basics ;
 SubInclude TOP jorney zmq hello ;
 SubInclude TOP jorney zmq weather ;
