@@ -3,7 +3,14 @@ SubDir TOP jorney zmq weather ;
 zmq.weather.dir.root = $(SUBDIR) ;
 
 SubInclude TOP jorney zmq weather cpp ;
+SubInclude TOP jorney zmq weather csharp ;
 
 Depends zmq.weather :
 		zmq.weather.cpp
+		zmq.weather.csharp
+		;
+
+Depends clean : clean:zmq.weather :
+		clean:zmq.weather.cpp
+		clean:zmq.weather.csharp
 		;

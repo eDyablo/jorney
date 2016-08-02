@@ -1,0 +1,19 @@
+SubDir TOP jorney zmq weather csharp ;
+
+zmq.weather.csharp.dir.root = $(SUBDIR) ;
+
+SubInclude TOP jorney zmq weather csharp publisher ;
+SubInclude TOP jorney zmq weather csharp subscriber ;
+
+Depends zmq.weather.csharp :
+		zmq.weather.csharp.publisher.app
+		zmq.weather.csharp.subscriber.app
+		;
+
+Depends clean : clean:zmq.weather.csharp :
+		clean:zmq.weather.csharp.publisher.app
+		clean:zmq.weather.csharp.subscriber.app
+		;
+
+MakeLocate zmq.weather.csharp : [ FDirName $(zmq.weather.csharp.dir.root) build $(PLATFORM) $(CONFIG) ] ;
+ZeroMQ.CLR.Use zmq.weather.csharp : install ;

@@ -1,0 +1,13 @@
+SubDir TOP jorney zmq weather csharp subscriber ;
+
+zmq.weather.csharp.subscriber.dir.root = $(SUBDIR) ;
+
+CSharp.CscFlags zmq.weather.csharp.subscriber.app : $(csharp.flags) ;
+
+CSharp.ReferencePaths zmq.weather.csharp.subscriber.app : $(zeromq.clrzmq4.dir.root)/Release ;
+
+CSharp.ReferenceAssemblies zmq.weather.csharp.subscriber.app : ZeroMQ.dll ;
+
+LOCATE_TARGET = [ FDirName $(zmq.weather.csharp.dir.root) build $(PLATFORM) $(CONFIG) ] ;
+CSharp.Application zmq.weather.csharp.subscriber.app :
+		@($(zmq.weather.csharp.subscriber.dir.root)/main/src/**.cs:W=$(zmq.weather.csharp.subscriber.dir.root)/) ;
