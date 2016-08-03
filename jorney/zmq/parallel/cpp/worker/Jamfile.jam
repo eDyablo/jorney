@@ -1,0 +1,13 @@
+SubDir TOP jorney zmq parallel cpp worker ;
+
+zmq.parallel.cpp.worker.dir.root = $(SUBDIR) ;
+
+ZeroMQ.Use zmq.parallel.cpp.worker.app : link ;
+
+C.IncludeDirectories zmq.parallel.cpp.worker.app : $(zmq.basics.cpp.dir.include) ;
+
+C.LinkLibraries zmq.parallel.cpp.worker.app : zmq.basics.cpp.lib ;
+
+LOCATE_TARGET = [ FDirName $(zmq.parallel.cpp.dir.root) build $(PLATFORM) $(CONFIG) ] ;
+C.Application zmq.parallel.cpp.worker.app :
+		@($(zmq.parallel.cpp.worker.dir.root)/main/src/**.cpp:W=$(zmq.parallel.cpp.worker.dir.root)/) ;
