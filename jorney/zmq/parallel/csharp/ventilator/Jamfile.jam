@@ -1,0 +1,13 @@
+SubDir TOP jorney zmq parallel csharp ventilator ;
+
+zmq.parallel.csharp.ventilator.dir.root = $(SUBDIR) ;
+
+CSharp.CscFlags zmq.parallel.csharp.ventilator.app : $(csharp.flags) ;
+
+CSharp.ReferencePaths zmq.parallel.csharp.ventilator.app : $(zeromq.clrzmq4.dir.root)/Release ;
+
+CSharp.ReferenceAssemblies zmq.parallel.csharp.ventilator.app : ZeroMQ.dll ;
+
+LOCATE_TARGET = [ FDirName $(zmq.parallel.csharp.dir.root) build $(PLATFORM) $(CONFIG) ] ;
+CSharp.Application zmq.parallel.csharp.ventilator.app :
+		@($(zmq.parallel.csharp.ventilator.dir.root)/main/src/**.cs:W=$(zmq.parallel.csharp.ventilator.dir.root)/) ;

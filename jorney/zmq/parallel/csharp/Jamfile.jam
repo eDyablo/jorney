@@ -1,0 +1,22 @@
+SubDir TOP jorney zmq parallel csharp ;
+
+zmq.parallel.csharp.dir.root = $(SUBDIR) ;
+
+SubInclude TOP jorney zmq parallel csharp ventilator ;
+SubInclude TOP jorney zmq parallel csharp worker ;
+SubInclude TOP jorney zmq parallel csharp sink ;
+
+Depends zmq.parallel.csharp :
+		zmq.parallel.csharp.ventilator.app
+		zmq.parallel.csharp.worker.app
+		zmq.parallel.csharp.sink.app
+		;
+
+Depends clean : clean:zmq.parallel.csharp :
+		clean:zmq.parallel.csharp.ventilator.app
+		clean:zmq.parallel.csharp.worker.app
+		clean:zmq.parallel.csharp.sink.app
+		;
+
+MakeLocate zmq.parallel.csharp : [ FDirName $(zmq.parallel.csharp.dir.root) build $(PLATFORM) $(CONFIG) ] ;
+ZeroMQ.CLR.Use zmq.parallel.csharp : install ;
