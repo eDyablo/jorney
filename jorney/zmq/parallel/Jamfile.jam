@@ -1,3 +1,14 @@
 SubDir TOP jorney zmq parallel ;
 
 SubInclude TOP jorney zmq parallel cpp ;
+SubInclude TOP jorney zmq parallel csharp ;
+
+Depends zmq.parallel :
+		zmq.parallel.cpp
+		zmq.parallel.csharp
+		;
+
+Depends clean : clean:zmq.parallel :
+		clean:zmq.parallel.cpp
+		clean:zmq.parallel.csharp
+		;
