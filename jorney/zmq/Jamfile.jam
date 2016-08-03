@@ -48,7 +48,12 @@ rule ZeroMQ.Use TARGET : OPTIONS : DIRECTORY
 	if link in $(OPTIONS)
 	{
 		C.LinkDirectories $(TARGET) : $(zeromq.libzmq.dir.library)	;
-		C.LinkPrebuiltLibraries $(TARGET) : zmq ;
+		local zmqLibName = zmq ;
+		if $(PLATFORM) in win32 win64
+		{
+			zmqLibName = libzmq ;
+		}
+		C.LinkPrebuiltLibraries $(TARGET) : $(zmqLibName) ;
 	}
 	if install in $(OPTIONS)
 	{
