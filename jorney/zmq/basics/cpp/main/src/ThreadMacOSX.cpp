@@ -1,11 +1,11 @@
 #include <unistd.h>
 
 namespace basics {
-	void sleep(size_t seconds) {
+	void sleep(unsigned int seconds) {
 		::sleep(seconds);
 	}
 
-	void msleep(size_t milliSeconds) {
+	void msleep(unsigned int milliSeconds) {
 		::usleep(milliSeconds * 1000);
 	}
 }

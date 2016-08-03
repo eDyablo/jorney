@@ -1,9 +1,11 @@
+#include <Windows.h>
+
 namespace basics {
-	void sleep(size_t seconds) {
+	void sleep(unsigned int seconds) {
 		::Sleep(seconds * 1000);
 	}
 
-	void msleep(size_t milliSeconds) {
+	void msleep(unsigned int milliSeconds) {
 		::Sleep(milliSeconds);
 	}
 }
