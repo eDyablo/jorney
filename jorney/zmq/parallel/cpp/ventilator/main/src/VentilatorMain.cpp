@@ -25,6 +25,7 @@ int main() {
     message.rebuild(10);
     memset(message.data(), '\0', 10);
     sprintf ((char*)message.data(), "%d", workload);
+    std::cout << workload << "\n";
     sender.send(message);
   }
   std::cout << "Total expected cost: " << totalWorkload << " msec" << std::endl;
