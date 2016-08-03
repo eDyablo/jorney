@@ -1,0 +1,22 @@
+SubDir TOP jorney zmq parallel cpp ;
+
+zmq.parallel.cpp.dir.root = $(SUBDIR) ;
+
+SubInclude TOP jorney zmq parallel cpp ventilator ;
+SubInclude TOP jorney zmq parallel cpp worker ;
+SubInclude TOP jorney zmq parallel cpp sink ;
+
+Depends zmq.parallel.cpp :
+		zmq.parallel.cpp.ventilator.app
+		zmq.parallel.cpp.worker.app
+		zmq.parallel.cpp.sink.app
+		;
+
+Depends clean : clean:zmq.parallel.cpp :
+		clean:zmq.parallel.cpp.ventilator.app
+		clean:zmq.parallel.cpp.worker.app
+		clean:zmq.parallel.cpp.sink.app
+		;
+
+MakeLocate zmq.parallel.cpp : [ FDirName $(zmq.parallel.cpp.dir.root) build $(PLATFORM) $(CONFIG) ] ;
+ZeroMQ.Use zmq.parallel.cpp : install ;

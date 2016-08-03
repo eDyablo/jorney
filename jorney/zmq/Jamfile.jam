@@ -107,3 +107,4 @@ zmq.dir.root = $(SUBDIR) ;
 SubInclude TOP jorney zmq basics ;
 SubInclude TOP jorney zmq hello ;
 SubInclude TOP jorney zmq weather ;
+SubInclude TOP jorney zmq parallel ;
