@@ -8,24 +8,80 @@ using ZeroMQ;
 
 namespace Zmq.Hello
 {
-	static partial class Server
+	class Server : IDisposable
 	{
+		private ZContext context;
+		private ZSocket channel;
+
 		public static void Main(string[] args)
 		{
-			using (var context = new ZContext())
-			using (var responder = new ZSocket(context, ZSocketType.REP))
+			using (var server = new Server())
 			{
-				responder.Bind("tcp://*:5555");
-				while (true)
-				{
-					using (ZFrame request = responder.ReceiveFrame())
-					{
-						Console.WriteLine("Received {0}", request.ReadString());
-						Thread.Sleep(1);
-						responder.Send(new ZFrame("World"));
-					}
-				}
+				server.Run();
 			}
+		}
+
+		public Server()
+		{
+			context = new ZContext();
+			channel = new ZSocket(context, ZSocketType.REP);
+		}
+
+		public void Run()
+		{
+			Initialize();
+			Communicate();
+		}
+
+		public void Dispose()
+		{
+			channel.Dispose();
+			context.Dispose();
+		}
+
+		private void Initialize()
+		{
+			channel.Bind("tcp://*:5555");
+		}
+
+		private void Communicate()
+		{
+			while (true)
+				ProcessRequest();
+		}
+
+		private void ProcessRequest()
+		{
+			var request = Receive();
+			Report("Received {0}\n", request);
+			Busy();
+			Answer("World");
+		}
+
+		private string Receive()
+		{
+			using (var request = channel.ReceiveFrame())
+			{
+				return request.ReadString();
+			}
+		}
+
+		private void Answer(string text)
+		{
+			using (var answer =  new ZFrame(text))
+			{
+				channel.Send(answer);
+			}
+		}
+
+		private void Busy()
+		{
+			Thread.Sleep(500);
+		}
+
+		private void Report(string text, params string[] extra)
+		{
+			Console.Write(text, extra);
 		}
 	}
 }
