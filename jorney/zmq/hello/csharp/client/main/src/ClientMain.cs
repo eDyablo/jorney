@@ -41,6 +41,7 @@ namespace Zmq.Hello
 
 		private void Initialize()
 		{
+			Report("Connecting to hello server...\n");
 			channel.Connect("tcp://localhost:5555");
 		}
 
