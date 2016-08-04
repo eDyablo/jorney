@@ -16,7 +16,7 @@ namespace zmqhello {
 
 	private:
 		void initialize() {
-			std::cout << "Connecting to hello world server..." << std::endl;
+			std::cout << "Connecting to hello server..." << std::endl;
 			channel.connect("tcp://localhost:5555");
 		}
 
