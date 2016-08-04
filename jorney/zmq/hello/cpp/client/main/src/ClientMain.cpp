@@ -22,13 +22,13 @@ namespace zmqhello {
 
 		void communicate() {
 			int const requestNumber = 10;
-			for (int requestIndex = 1; requestIndex <= requestNumber; ++requestIndex)
-				makeRequest("Hello", requestIndex);
+			for (int i = 1; i <= requestNumber; ++i)
+				makeRequest("Hello");
 		}
 
-		void makeRequest(std::string const& text, int index) {
-			std::cout << "Sending " << text << " " << index << "..." << std::endl;
-			std::cout << "Received " << request(text) << " " << index << std::endl;
+		void makeRequest(std::string const& text) {
+			std::cout << "Sending " << text << "..."
+					<< " Received: " << request(text) << std::endl;
 		}
 
 		std::string request(std::string const& text) {

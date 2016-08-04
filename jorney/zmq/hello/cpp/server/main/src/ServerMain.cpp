@@ -22,14 +22,13 @@ namespace zmqhello {
 		}
 
 		void communicate() {
-			while (true) {
-				processOneRequest();
-				busy();
-			}
+			while (true)
+				processRequest();
 		}
 
-		void processOneRequest() {
+		void processRequest() {
 			std::cout << "Received " << receive() << std::endl;
+			busy();
 			replay("World");
 		}
 
@@ -46,7 +45,7 @@ namespace zmqhello {
 		}
 
 		void busy() {
-			basics::sleep(1);
+			basics::msleep(500);
 		}
 
 	private:
