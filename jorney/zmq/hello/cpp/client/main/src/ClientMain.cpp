@@ -1,21 +1,61 @@
 #include <string>
 #include <iostream>
-
 #include "zmq.hpp"
 
+namespace zmqhello {
+	class Client {
+	public:
+		Client() : context(1), channel(context, ZMQ_REQ) {
+		}
+
+	public:
+		void run() {
+			initialize();
+			communicate();
+		}
+
+	private:
+		void initialize() {
+			std::cout << "Connecting to hello world server..." << std::endl;
+			channel.connect("tcp://localhost:5555");
+		}
+
+		void communicate() {
+			int const requestNumber = 10;
+			for (int requestIndex = 1; requestIndex <= requestNumber; ++requestIndex)
+				makeRequest("Hello", requestIndex);
+		}
+
+		void makeRequest(std::string const& text, int index) {
+			std::cout << "Sending " << text << " " << index << "..." << std::endl;
+			std::cout << "Received " << request(text) << " " << index << std::endl;
+		}
+
+		std::string request(std::string const& text) {
+			send(text);
+			return receive();
+		}
+
+		void send(std::string const& text) {
+			zmq::message_t request(text.size());
+			::memcpy(request.data(), text.c_str(), text.size());
+			channel.send(request);
+		}
+
+		std::string receive() {
+			zmq::message_t reply;
+			channel.recv(&reply);
+			return std::string((char*)reply.data(), reply.size());
+		}
+
+	private:
+		zmq::context_t context;
+		zmq::socket_t channel;
+	};
+}
+
 int main() {
-	zmq::context_t context(1);
-	zmq::socket_t socket(context, ZMQ_REQ);
-	std::cout << "Connecting to hello world server…" << std::endl;
-	socket.connect ("tcp://localhost:5555");
-	for (int request_nbr = 0; request_nbr != 10; request_nbr++) {
-		zmq::message_t request(5);
-		::memcpy(request.data(), "Hello", 5);
-		std::cout << "Sending Hello " << request_nbr << "…" << std::endl;
-		socket.send(request);
-		zmq::message_t reply;
-		socket.recv(&reply);
-		std::cout << "Received World " << request_nbr << std::endl;
-	}
+	zmqhello::Client client;
+	client.run();
 	return 0;
 }
