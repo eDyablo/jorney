@@ -27,6 +27,8 @@ namespace zmqbroker {
 		void initialize() {
 			frontend.bind(endpoint(frontendPort));
 			backend.bind(endpoint(backendPort));
+			std::cout << "Broker's frontend is " << frontendPort
+					<< " and backend is " << backendPort << "\n";
 		}
 
 		std::string endpoint(int port) const {
