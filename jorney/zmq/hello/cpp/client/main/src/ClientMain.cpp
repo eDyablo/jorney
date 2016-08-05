@@ -5,10 +5,12 @@
 namespace zmqhello {
 	class Client {
 	public:
-		Client() : context(1), channel(context, ZMQ_REQ) {
+		Client(std::string const& anEndpoint) :
+			endpoint(anEndpoint),
+			context(1),
+			channel(context, ZMQ_REQ) {
 		}
 
-	public:
 		void run() {
 			initialize();
 			communicate();
@@ -16,8 +18,8 @@ namespace zmqhello {
 
 	private:
 		void initialize() {
-			std::cout << "Connecting to hello server..." << std::endl;
-			channel.connect("tcp://localhost:5555");
+			std::cout << "Connecting to hello server "<< endpoint << " ...\n";
+			channel.connect("tcp://" + endpoint);
 		}
 
 		void communicate() {
@@ -49,13 +51,17 @@ namespace zmqhello {
 		}
 
 	private:
+		std::string endpoint;
 		zmq::context_t context;
 		zmq::socket_t channel;
 	};
 }
 
-int main() {
-	zmqhello::Client client;
+int main(int argc, char* argv[]) {
+	std::string endpoint = "localhost:5559";
+	if (argc > 1)
+		endpoint = argv[1];
+	zmqhello::Client client(endpoint);
 	client.run();
 	return 0;
 }
