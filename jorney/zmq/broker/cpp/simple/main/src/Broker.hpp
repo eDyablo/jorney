@@ -14,8 +14,8 @@ namespace zmqbroker {
 			context(1),
 			frontend(context, ZMQ_ROUTER),
 			backend(context, ZMQ_DEALER) {
-			items[0] = {frontend, 0, ZMQ_POLLIN, 0};
-			items[1] = {backend, 0, ZMQ_POLLIN, 0};
+			items[0] = pollin(frontend);
+			items[1] = pollin(backend);
 		}
 
 		void run() {
@@ -24,6 +24,11 @@ namespace zmqbroker {
 		}
 
 	private:
+		static zmq::pollitem_t pollin(zmq::socket_t& socket) {
+			zmq::pollitem_t item = { socket, 0, ZMQ_POLLIN, 0 };
+			return item;
+		}
+
 		void initialize() {
 			frontend.bind(endpoint(frontendPort));
 			backend.bind(endpoint(backendPort));
