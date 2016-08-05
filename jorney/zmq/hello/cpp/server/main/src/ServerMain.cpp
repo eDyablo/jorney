@@ -6,7 +6,8 @@
 namespace zmqhello {
 	class Server {
 	public:
-		Server() :
+		Server(std::string const& anEndpoint) :
+			endpoint(anEndpoint),
 			context(1),
 			channel(context, ZMQ_REP) {
 		}
@@ -18,7 +19,15 @@ namespace zmqhello {
 
 	private:
 		void initialize() {
-			channel.bind("tcp://*:5555");
+			std::cout << "Ready to service requests from " << endpoint << " ...\n";
+			if (useBroker())
+				channel.connect("tcp://" + endpoint);
+			else
+				channel.bind("tcp://" + endpoint);
+		}
+
+		bool useBroker() const {
+			return endpoint.find_first_of('*') != 0;
 		}
 
 		void communicate() {
@@ -45,17 +54,21 @@ namespace zmqhello {
 		}
 
 		void busy() {
-			basics::msleep(500);
+			basics::sleep(1);
 		}
 
 	private:
+		std::string endpoint;
 		zmq::context_t context;
 		zmq::socket_t channel;
 	};
 }
 
-int main() {
-	zmqhello::Server server;
+int main(int argc, char* argv[]) {
+	std::string endpoint = "localhost:5560";
+	if (argc > 1)
+		endpoint = argv[1];
+	zmqhello::Server server(endpoint);
 	server.run();
 	return 0;
 }
