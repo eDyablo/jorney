@@ -6,9 +6,9 @@
 #include "zmq.hpp"
 
 namespace zmqbroker {
-	class SimpleBroker {
+	class BuiltinBroker {
 	public:
-		SimpleBroker(unsigned int aFrontendPort, unsigned int aBackendPort) :
+		BuiltinBroker(unsigned int aFrontendPort, unsigned int aBackendPort) :
 			frontendPort(aFrontendPort),
 			backendPort(aBackendPort),
 			context(1),
@@ -43,41 +43,7 @@ namespace zmqbroker {
 		}
 
 		void communicate() {
-			while (true) {
-				poll();
-				process();
-			}
-		}
-
-		void poll() {
-			zmq::poll(&items[0], 2, -1);
-		}
-
-		void process() {
-			processClient();
-			processService();
-		}
-
-		void processClient() {
-			if (hasMessage(items[0]))
-				translateMessage(frontend, backend);
-		}
-
-		void processService() {
-			if (hasMessage(items[1]))
-				translateMessage(backend, frontend);
-		}
-
-		bool hasMessage(zmq::pollitem_t const& item) const {
-			return item.revents & ZMQ_POLLIN;
-		}
-
-		void translateMessage(zmq::socket_t& from, zmq::socket_t& to) {
-			zmq::message_t message;
-			do {
-				from.recv(&message);
-				to.send(message, message.more() ? ZMQ_SNDMORE : 0);
-			} while (message.more());
+			zmq::proxy(frontend, backend, 0);
 		}
 
 	private:
