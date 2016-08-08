@@ -8,6 +8,7 @@ C.IncludeDirectories zmq.broker.cpp.simple.app : $(zmq.basics.cpp.dir.include) ;
 
 C.LinkLibraries zmq.broker.cpp.simple.app : zmq.basics.cpp.lib ;
 
-LOCATE_TARGET = [ FDirName $(zmq.broker.cpp.dir.root) build $(PLATFORM) $(CONFIG) ] ;
+LOCATE_TARGET = [ FDirName $(zmq.broker.cpp.simple.dir.root) build $(PLATFORM) $(CONFIG) ] ;
+C.OutputPath zmq.broker.cpp.simple.app : [ FDirName $(zmq.broker.cpp.dir.root) build $(PLATFORM) $(CONFIG) ] ;
 C.Application zmq.broker.cpp.simple.app :
 		@($(zmq.broker.cpp.simple.dir.root)/main/src/**.cpp:W=$(zmq.broker.cpp.simple.dir.root)/) ;
