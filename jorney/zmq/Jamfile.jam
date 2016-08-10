@@ -109,3 +109,4 @@ SubInclude TOP jorney zmq hello ;
 SubInclude TOP jorney zmq weather ;
 SubInclude TOP jorney zmq parallel ;
 SubInclude TOP jorney zmq broker ;
+SubInclude TOP jorney zmq bridge ;

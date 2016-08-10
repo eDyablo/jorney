@@ -1,0 +1,14 @@
+SubDir TOP jorney zmq bridge cpp psforwarder ;
+
+zmq.bridge.cpp.psforwarder.dir.root = $(SUBDIR) ;
+
+ZeroMQ.Use zmq.bridge.cpp.psforwarder.app : link ;
+
+C.IncludeDirectories zmq.bridge.cpp.psforwarder.app : $(zmq.basics.cpp.dir.include) ;
+
+C.LinkLibraries zmq.bridge.cpp.psforwarder.app : zmq.basics.cpp.lib ;
+
+LOCATE_TARGET = [ FDirName $(zmq.bridge.cpp.psforwarder.dir.root) build $(PLATFORM) $(CONFIG) ] ;
+C.OutputPath zmq.bridge.cpp.psforwarder.app : [ FDirName $(zmq.bridge.cpp.dir.root) build $(PLATFORM) $(CONFIG) ] ;
+C.Application zmq.bridge.cpp.psforwarder.app :
+		@($(zmq.bridge.cpp.psforwarder.dir.root)/main/src/**.cpp:W=$(zmq.bridge.cpp.psforwarder.dir.root)/) ;
