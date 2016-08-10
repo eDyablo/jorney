@@ -1,0 +1,17 @@
+SubDir TOP jorney zmq bridge cpp ;
+
+zmq.bridge.cpp.dir.root = $(SUBDIR) ;
+
+SubInclude TOP jorney zmq bridge cpp psforwarder ;
+
+Depends zmq.bridge.cpp :
+		zmq.bridge.cpp.psforwarder.app
+		;
+
+Depends clean : clean:zmq.bridge.cpp :
+		clean:zmq.bridge.cpp.psforwarder.app
+		;
+
+MakeLocate zmq.bridge.cpp :
+		[ FDirName $(zmq.bridge.cpp.dir.root) build $(PLATFORM) $(CONFIG) ] ;
+ZeroMQ.Use zmq.bridge.cpp : install ;
