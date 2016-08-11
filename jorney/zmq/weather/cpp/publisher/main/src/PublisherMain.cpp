@@ -1,26 +1,25 @@
-#include <ctime>
-#include <cstdlib>
+
+#include <exception>
 #include <iostream>
+#include <string>
+#include <vector>
 
-#include "zmq.hpp"
-#include "basics/Thread.h"
+#include "PublisherProgramm.hpp"
 
-int main() {
-	zmq::context_t context(1);
-	zmq::socket_t publisher(context, ZMQ_PUB);
-	publisher.bind("tcp://*:5556");
-	srand((unsigned)time(0));
-	while (true) {
-		int zipcode, temperature, relhumidity;
-		zipcode = ::rand() % 10 + 10000;
-		temperature = ::rand() % 215 - 80;
-		relhumidity = ::rand() % 50 + 10;
-		zmq::message_t message(20);
-		snprintf((char *) message.data(), 20 ,
-				"%05d %d %d", zipcode, temperature, relhumidity);
-		publisher.send(message);
-		std::cout << zipcode << " " << temperature << " " << relhumidity << "\n";
-		basics::msleep(50);
+int main(int argc, char* argv[]) {
+	try {
+		std::vector<std::string> args;
+		std::copy(&argv[1], &argv[argc], std::back_inserter(args));
+		zmqweather::PublisherProgramm program;
+		program.run(args);
+		return 0;
 	}
-	return 0;
+	catch (std::exception const& e) {
+		std::cout << e.what() << "\n";
+		return 1;
+	}
+	catch (...) {
+		std::cout << "Something went wrong\n";
+		return 2;
+	}
 }
