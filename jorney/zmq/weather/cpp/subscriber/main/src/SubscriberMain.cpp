@@ -4,7 +4,6 @@
 #include <string>
 #include <vector>
 
-#include "zmq.hpp"
 #include "SubscriberProgramm.hpp"
 
 int main(int argc, char* argv[]) {
