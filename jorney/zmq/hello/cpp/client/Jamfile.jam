@@ -4,6 +4,7 @@ zmq.hello.cpp.client.dir.root = $(SUBDIR) ;
 
 ZeroMQ.Use zmq.hello.cpp.client.app : link ;
 
-LOCATE_TARGET = [ FDirName $(zmq.hello.cpp.dir.root) build $(PLATFORM) $(CONFIG) ] ;
+LOCATE_TARGET = [ FDirName $(zmq.hello.cpp.client.dir.root) build $(PLATFORM) $(CONFIG) ] ;
+C.OutputPath zmq.hello.cpp.client.app : [ FDirName $(zmq.hello.cpp.dir.root) build $(PLATFORM) $(CONFIG) ] ;
 C.Application zmq.hello.cpp.client.app :
 		@($(zmq.hello.cpp.client.dir.root)/src/**.cpp:W=$(zmq.hello.cpp.client.dir.root)/) ;

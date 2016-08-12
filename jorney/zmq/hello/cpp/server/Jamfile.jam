@@ -8,6 +8,7 @@ C.IncludeDirectories zmq.hello.cpp.server.app : $(zmq.basics.cpp.dir.include) ;
 
 C.LinkLibraries zmq.hello.cpp.server.app : zmq.basics.cpp.lib ;
 
-LOCATE_TARGET = [ FDirName $(zmq.hello.cpp.dir.root) build $(PLATFORM) $(CONFIG) ] ;
+LOCATE_TARGET = [ FDirName $(zmq.hello.cpp.server.dir.root) build $(PLATFORM) $(CONFIG) ] ;
+C.OutputPath zmq.hello.cpp.server.app : [ FDirName $(zmq.hello.cpp.dir.root) build $(PLATFORM) $(CONFIG) ] ;
 C.Application zmq.hello.cpp.server.app :
 		@($(zmq.hello.cpp.server.dir.root)/src/**.cpp:W=$(zmq.hello.cpp.server.dir.root)/) ;
