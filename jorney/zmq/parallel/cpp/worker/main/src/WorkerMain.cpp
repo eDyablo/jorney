@@ -17,10 +17,10 @@ int main() {
 		std::string smessage(static_cast<char*>(message.data()), message.size());
 		std::istringstream iss(smessage);
 		iss >> workload;
+		std::cout << workload << " " << std::flush;
 		basics::msleep(workload);
 		message.rebuild();
 		sink.send(message);
-		std::cout << workload << " ";
 	}
 	return 0;
 }
