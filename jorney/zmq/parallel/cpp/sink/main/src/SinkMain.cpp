@@ -18,6 +18,6 @@ int main() {
 		else
 			std::cout << "." << std::flush;
 	}
-
+	std::cout << "\n";
 	return 0;
 }
