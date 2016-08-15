@@ -1,26 +1,26 @@
-#include <string>
+#include "WorkerProgramm.hpp"
+#include <algorithm>
+#include <exception>
 #include <iostream>
+#include <iterator>
 #include <sstream>
-#include "zmq.hpp"
-#include "basics/Thread.h"
+#include <string>
+#include <vector>
 
-int main() {
-	zmq::context_t context(1);
-	zmq::socket_t ventilator(context, ZMQ_PULL);
-	ventilator.connect("tcp://localhost:5557");
-	zmq::socket_t sink(context, ZMQ_PUSH);
-	sink.connect("tcp://localhost:5558");
-	while (true) {
-		zmq::message_t message;
-		int workload;
-		ventilator.recv(&message);
-		std::string smessage(static_cast<char*>(message.data()), message.size());
-		std::istringstream iss(smessage);
-		iss >> workload;
-		std::cout << workload << " " << std::flush;
-		basics::msleep(workload);
-		message.rebuild();
-		sink.send(message);
+int main(int argc, char* argv[]) {
+	try {
+		std::vector<std::string> args;
+		std::copy(&argv[1], &argv[argc], back_inserter(args));
+		zmqparallel::WorkerProgramm programm;
+		programm.run(args);
+		return 0;
 	}
-	return 0;
+	catch (std::exception const& e) {
+		std::cerr << e.what() << ".\n";
+		return 1;
+	}
+	catch (...) {
+		std::cerr << "Something went wrong.\n";
+		return 2;
+	}
 }
