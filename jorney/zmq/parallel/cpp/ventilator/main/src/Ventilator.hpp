@@ -3,6 +3,7 @@
 #include "zmq.hpp"
 #include "basics/Thread.h"
 #include <cstdio>
+#include <ctime>
 #include <iostream>
 #include <string>
 
@@ -27,7 +28,7 @@ namespace zmqparallel {
       connectPublishing(publishingEndpoint);
       connectWorkers();
       connectSink(sinkEndpoint);
-      ::srand((unsigned)time(0));
+      ::srand((unsigned)::time(0));
     }
 
     void connectPublishing(std::string const& endpoint) {
