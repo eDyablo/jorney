@@ -1,31 +1,26 @@
-#include "zmq.hpp"
+#include "SinkProgramm.hpp"
+#include <algorithm>
 #include <chrono>
+#include <exception>
 #include <iostream>
+#include <iterator>
+#include <string>
+#include <vector>
 
-int main() {
-	zmq::context_t context(1);
-	zmq::socket_t receiver(context,ZMQ_PULL);
-	receiver.bind("tcp://*:5558");
-
-	zmq::message_t message;
-	receiver.recv(&message);
-
-	auto start = std::chrono::steady_clock::now();
-
-	int const taskNumber = 100;
-	int total_msec = 0;
-	for (int taskIndex = 0; taskIndex < taskNumber; taskIndex++) {
-		receiver.recv(&message);
-		if ((taskIndex / 10) * 10 == taskIndex)
-			std::cout << ":";
-		else
-			std::cout << ".";
-	}
-
-	auto end = std::chrono::steady_clock::now();
-	auto interval = std::chrono::duration_cast<std::chrono::milliseconds>(
-			end - start).count();
-
-	std::cout << "\nCost:" << interval << " msec\n";
-	return 0;
+int main(int argc, char* argv[]) {
+  try {
+    std::vector<std::string> args;
+    std::copy(&argv[1], &argv[argc], back_inserter(args));
+    zmqparallel::SinkProgramm programm;
+    programm.run(args);
+    return 0;
+  }
+  catch (std::exception const& e) {
+    std::cerr << e.what() << ".\n";
+    return 1;
+  }
+  catch (...) {
+    std::cerr << "Something went wrong.\n";
+    return 2;
+  }
 }
