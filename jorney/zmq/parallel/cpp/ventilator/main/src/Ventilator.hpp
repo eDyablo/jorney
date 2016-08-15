@@ -53,30 +53,53 @@ namespace zmqparallel {
 
     void communicate() {
       notifySink();
-      std::cout << "Sending tasks to workers...\n";
-      int totalWorkload = 0;
-      int const taskNumber = 100;
-      for (int taskIndex = 0; taskIndex < taskNumber; ++taskIndex) {
-        int workload = ::rand() % taskNumber + 1;
-        totalWorkload += workload;
-        zmq::message_t message(10);
-        ::memset(message.data(), '\0', 10);
-        ::sprintf((char*)message.data(), "%d", workload);
-        std::cout << workload << " " << std::flush;
-        publishingChannel.send(message);
-      }
-      std::cout << "\nTotal expected cost: " << totalWorkload << " msec\n";
+      startWorkload();
+      loadTasks(100);
+      endWorkload();
     }
 
     void notifySink() {
-      zmq::message_t message(2);
-      ::memcpy(message.data(), "0", 1);
-      sinkChannel.send(message);
+      send(sinkChannel, "0");
+    }
+
+    void send(zmq::socket_t& channel, std::string const& text) {
+      zmq::message_t message(text.size());
+      ::memcpy(message.data(), text.c_str(), text.size());
+      channel.send(message); 
+    }
+
+    void startWorkload() {
+      totalWorkload = 0;
+      std::cout << "Sending tasks to workers...\n";
+    }
+
+    void loadTasks(size_t taskNumber) {
+      for (size_t i = 0; i < taskNumber; ++i)
+        loadTask(taskNumber);
+    }
+
+    void loadTask(size_t taskNumber) {
+      int workload = getWorkLoad(taskNumber);
+      totalWorkload += workload;
+      zmq::message_t message(10);
+      ::memset(message.data(), '\0', 10);
+      ::sprintf((char*)message.data(), "%d", workload);
+      std::cout << workload << " " << std::flush;
+      publishingChannel.send(message);
+    }
+
+    int getWorkLoad(size_t taskNumber) const {
+      return ::rand() % taskNumber + 1;
+    }
+
+    void endWorkload() {
+      std::cout << "\nTotal expected cost: " << totalWorkload << " msec\n";
     }
 
   private:
     zmq::context_t context;
     zmq::socket_t publishingChannel;
     zmq::socket_t sinkChannel;
+    int totalWorkload;
   };
 }
