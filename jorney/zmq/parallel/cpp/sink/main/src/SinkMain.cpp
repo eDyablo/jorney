@@ -1,6 +1,5 @@
 #include "SinkProgramm.hpp"
 #include <algorithm>
-#include <chrono>
 #include <exception>
 #include <iostream>
 #include <iterator>
