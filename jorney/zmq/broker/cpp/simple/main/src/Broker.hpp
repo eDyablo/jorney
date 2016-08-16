@@ -1,96 +1,98 @@
 #pragma once
 
-#include <iostream>
-#include <string>
-#include <sstream>
 #include "zmq.hpp"
+#include <iostream>
+#include <sstream>
+#include <string>
 
 namespace zmqbroker {
-	class SimpleBroker {
-	public:
-		SimpleBroker(unsigned int aFrontendPort, unsigned int aBackendPort) :
-			frontendPort(aFrontendPort),
-			backendPort(aBackendPort),
-			context(1),
-			frontend(context, ZMQ_ROUTER),
-			backend(context, ZMQ_DEALER) {
-			items[0] = pollin(frontend);
-			items[1] = pollin(backend);
-		}
+  class SimpleBroker {
+  public:
+    SimpleBroker() :
+      context(1),
+      clientChannel(context, ZMQ_ROUTER),
+      serviceChannel(context, ZMQ_DEALER) {
+      items[0] = pollin(clientChannel);
+      items[1] = pollin(serviceChannel);
+    }
 
-		void run() {
-			initialize();
-			communicate();
-		}
+    void run(std::string const& frontend, std::string const& backend) {
+      initialize(frontend, backend);
+      communicate();
+    }
 
-	private:
-		static zmq::pollitem_t pollin(zmq::socket_t& socket) {
-			zmq::pollitem_t item = { socket, 0, ZMQ_POLLIN, 0 };
-			return item;
-		}
+  private:
+    static zmq::pollitem_t pollin(zmq::socket_t& socket) {
+      zmq::pollitem_t item = { socket, 0, ZMQ_POLLIN, 0 };
+      return item;
+    }
 
-		void initialize() {
-			frontend.bind(endpoint(frontendPort));
-			backend.bind(endpoint(backendPort));
-			std::cout << "Broker's frontend is " << frontendPort
-					<< " and backend is " << backendPort << "\n";
-		}
+    void initialize(std::string const& frontend, std::string const& backend) {
+      connectChannel(clientChannel, frontend);
+      connectChannel(serviceChannel, backend);
+      std::cout << "Broker's frontend is " << frontend
+          << " and backend is " << backend << "\n";
+    }
 
-		std::string endpoint(int port) const {
-			std::stringstream text;
-			text << "tcp://*:" << port;
-			return text.str();
-		}
+    void connectChannel(zmq::socket_t& channel, std::string const& endpoint) {
+      if (useSoloMode(endpoint))
+        channel.bind("tcp://" + endpoint);
+      else
+        channel.connect("tcp://" + endpoint);
+    }
 
-		void communicate() {
-			while (true) {
-				poll();
-				process();
-			}
-		}
+    bool useSoloMode(std::string const& endpoint) const {
+      return endpoint.find_first_of('*') == 0;
+    }
 
-		void poll() {
-			zmq::poll(&items[0], 2, -1);
-		}
+    void communicate() {
+      while (true) {
+        poll();
+        process();
+      }
+    }
 
-		void process() {
-			processClient();
-			processService();
-		}
+    void poll() {
+      zmq::poll(&items[0], 2, -1);
+    }
 
-		void processClient() {
-			if (hasMessage(items[0])) {
-				std::cout << "client:";
-				translateMessage(frontend, backend);
-			}
-		}
+    void process() {
+      processClient();
+      processService();
+    }
 
-		void processService() {
-			if (hasMessage(items[1])) {
-				std::cout << "server:";
-				translateMessage(backend, frontend);
-			}
-		}
+    void processClient() {
+      if (hasMessage(items[0])) {
+        std::cout << "client:";
+        translateMessage(clientChannel, serviceChannel);
+      }
+    }
 
-		bool hasMessage(zmq::pollitem_t const& item) const {
-			return item.revents & ZMQ_POLLIN;
-		}
+    void processService() {
+      if (hasMessage(items[1])) {
+        std::cout << "service:";
+        translateMessage(serviceChannel, clientChannel);
+      }
+    }
 
-		void translateMessage(zmq::socket_t& from, zmq::socket_t& to) {
-			zmq::message_t message;
-			do {
-				from.recv(&message);
-				std::cout << "[" << std::string(static_cast<char*>(message.data()), message.size()) << "]\n";
-				to.send(message, message.more() ? ZMQ_SNDMORE : 0);
-			} while (message.more());
-		}
+    bool hasMessage(zmq::pollitem_t const& item) const {
+      return item.revents & ZMQ_POLLIN;
+    }
 
-	private:
-		unsigned int frontendPort;
-		unsigned int backendPort;
-		zmq::context_t context;
-		zmq::socket_t frontend;
-		zmq::socket_t backend;
-		zmq::pollitem_t items[2];
-	};
+    void translateMessage(zmq::socket_t& from, zmq::socket_t& to) {
+      zmq::message_t message;
+      do {
+        from.recv(&message);
+        std::cout << "[" << std::string(static_cast<char*>(message.data()),
+            message.size()) << "]\n";
+        to.send(message, message.more() ? ZMQ_SNDMORE : 0);
+      } while (message.more());
+    }
+
+  private:
+    zmq::context_t context;
+    zmq::socket_t clientChannel;
+    zmq::socket_t serviceChannel;
+    zmq::pollitem_t items[2];
+  };
 }
