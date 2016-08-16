@@ -83,8 +83,7 @@ namespace zmqbroker {
       zmq::message_t message;
       do {
         from.recv(&message);
-        std::cout << "[" << std::string(static_cast<char*>(message.data()),
-            message.size()) << "]\n";
+        std::cout << "[" << message.size() << "]\n";
         to.send(message, message.more() ? ZMQ_SNDMORE : 0);
       } while (message.more());
     }
