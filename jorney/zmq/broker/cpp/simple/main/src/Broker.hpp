@@ -59,13 +59,17 @@ namespace zmqbroker {
 		}
 
 		void processClient() {
-			if (hasMessage(items[0]))
+			if (hasMessage(items[0])) {
+				std::cout << "client:";
 				translateMessage(frontend, backend);
+			}
 		}
 
 		void processService() {
-			if (hasMessage(items[1]))
+			if (hasMessage(items[1])) {
+				std::cout << "server:";
 				translateMessage(backend, frontend);
+			}
 		}
 
 		bool hasMessage(zmq::pollitem_t const& item) const {
@@ -76,6 +80,7 @@ namespace zmqbroker {
 			zmq::message_t message;
 			do {
 				from.recv(&message);
+				std::cout << "[" << std::string(static_cast<char*>(message.data()), message.size()) << "]\n";
 				to.send(message, message.more() ? ZMQ_SNDMORE : 0);
 			} while (message.more());
 		}
