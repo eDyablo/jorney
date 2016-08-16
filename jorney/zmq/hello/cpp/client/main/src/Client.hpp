@@ -24,7 +24,7 @@ namespace zmqhello {
     }
 
     void communicate(size_t requestNumber) {
-      for (int i = 0; i <= requestNumber; ++i) {
+      for (int i = 0; i < requestNumber; ++i) {
         std::cout << i + 1 << ": ";
         makeRequest("Hello");
       }
