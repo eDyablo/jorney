@@ -12,13 +12,13 @@ namespace zmqhello {
       serviceChannel(context, ZMQ_REQ) {
     }
 
-    void communicate(std::string& serviceEndpoint, size_t requestNumber) {
+    void communicate(std::string const& serviceEndpoint, size_t requestNumber) {
       connect(serviceEndpoint);
       communicate(requestNumber);
     }
 
   private:
-    void connect(std::string& serviceEndpoint) {
+    void connect(std::string const& serviceEndpoint) {
       std::cout << "Connecting to hello server " << serviceEndpoint << " ...\n";
       serviceChannel.connect("tcp://" + serviceEndpoint);
     }
