@@ -8,7 +8,9 @@ C.IncludeDirectories zmq.hello.cpp.mtserver.app : $(zmq.basics.cpp.dir.include) 
 
 C.LinkLibraries zmq.hello.cpp.mtserver.app : zmq.basics.cpp.lib ;
 
-C.C++Flags zmq.hello.cpp.mtserver.app : -std=c++11 -stdlib=libc++ ;
+if $(MAC) = true {
+	C.C++Flags zmq.hello.cpp.mtserver.app : -std=c++11 -stdlib=libc++ ;
+}
 
 LOCATE_TARGET = [ FDirName $(zmq.hello.cpp.mtserver.dir.root) build $(PLATFORM) $(CONFIG) ] ;
 C.OutputPath zmq.hello.cpp.mtserver.app : [ FDirName $(zmq.hello.cpp.dir.root) build $(PLATFORM) $(CONFIG) ] ;
