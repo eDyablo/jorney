@@ -4,7 +4,9 @@ zmq.parallel.cpp.sink.dir.root = $(SUBDIR) ;
 
 ZeroMQ.Use zmq.parallel.cpp.sink.app : link ;
 
-C.C++Flags zmq.parallel.cpp.sink.app : -std=c++11 -stdlib=libc++ ;
+if $(MAC) = true {
+	C.C++Flags zmq.parallel.cpp.sink.app : -std=c++11 -stdlib=libc++ ;
+}
 
 LOCATE_TARGET = [ FDirName $(zmq.parallel.cpp.dir.root) build $(PLATFORM) $(CONFIG) ] ;
 C.Application zmq.parallel.cpp.sink.app :
