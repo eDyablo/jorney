@@ -4,7 +4,10 @@ zmq.parallel.cpp.worker.dir.root = $(SUBDIR) ;
 
 ZeroMQ.Use zmq.parallel.cpp.worker.app : link ;
 
-C.IncludeDirectories zmq.parallel.cpp.worker.app : $(zmq.basics.cpp.dir.include) ;
+C.IncludeDirectories zmq.parallel.cpp.worker.app :
+		$(zmq.basics.cpp.dir.include)
+		[ FDirName $(TOP) jorney shims include ]
+		;
 
 LOCATE_TARGET = [ FDirName $(zmq.parallel.cpp.dir.root) build $(PLATFORM) $(CONFIG) ] ;
 C.Application zmq.parallel.cpp.worker.app :
