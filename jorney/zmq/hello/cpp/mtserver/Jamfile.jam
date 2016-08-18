@@ -4,7 +4,10 @@ zmq.hello.cpp.mtserver.dir.root = $(SUBDIR) ;
 
 ZeroMQ.Use zmq.hello.cpp.mtserver.app : link ;
 
-C.IncludeDirectories zmq.hello.cpp.mtserver.app : $(zmq.basics.cpp.dir.include) ;
+C.IncludeDirectories zmq.hello.cpp.mtserver.app :
+		$(zmq.basics.cpp.dir.include)
+		[ FDirName $(TOP) jorney shims include ]
+		;
 
 C.LinkLibraries zmq.hello.cpp.mtserver.app : zmq.basics.cpp.lib ;
 

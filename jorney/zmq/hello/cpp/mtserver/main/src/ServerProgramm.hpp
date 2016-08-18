@@ -1,15 +1,18 @@
 #pragma once
 
 #include "Server.hpp"
-
-#include <vector>
 #include <string>
+#include <vector>
 
 namespace zmqhello {
 	class ServerProgramm {
 	public:
 		void run(std::vector<std::string> const& args) {
 			server.communicate(getEndPoint(args), getWorkersNumber(args));
+		}
+
+		void handleSignal(int signal) {
+			server.stop();
 		}
 
 	private:
