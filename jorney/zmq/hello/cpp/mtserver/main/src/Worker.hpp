@@ -94,7 +94,9 @@ namespace zmqhello {
 
     void answer(std::string const& text) {
       zmq::message_t reply(text.size());
-      std::copy(text.begin(), text.end(), static_cast<char*>(reply.data()));
+      std::copy(text.begin(), text.end(),
+          stdext::make_checked_array_iterator(
+              static_cast<char*>(reply.data()), text.size()));
       taskChannel.send(reply);
       std::cout << " Replied: [" << text << "]\n" << std::flush;
     }

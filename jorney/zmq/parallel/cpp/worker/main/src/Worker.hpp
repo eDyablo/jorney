@@ -107,7 +107,9 @@ namespace zmqparallel {
 
     void send(zmq::socket_t& channel, std::string const& text) {
       zmq::message_t message(text.size());
-      std::copy(text.begin(), text.end(), static_cast<char*>(message.data()));
+      std::copy(text.begin(), text.end(),
+          stdext::make_checked_array_iterator(
+              static_cast<char*>(message.data()), text.size()));
       channel.send(message);
     }
 
