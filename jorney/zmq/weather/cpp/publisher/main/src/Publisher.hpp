@@ -76,7 +76,8 @@ namespace zmqweather {
 		void publish(std::string const& text) {
 			zmq::message_t message(text.size());
 			std::copy(text.begin(), text.end(),
-					reinterpret_cast<char*>(message.data()));
+					stdext::make_checked_array_iterator(
+							reinterpret_cast<char*>(message.data()), text.size()));
 			pubSocket.send(message);
 		}
 
