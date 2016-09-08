@@ -5,7 +5,9 @@ GTest.UseMain soundex.test.app ;
 
 C.IncludeDirectories soundex.test.app : include ;
 
-C.C++Flags soundex.test.app : -std=c++11 -stdlib=libc++ ;
+if $(MAC) = true {
+	C.C++Flags soundex.test.app : -std=c++11 -stdlib=libc++ ;
+}
 
 C.IncludeDirectories soundex.test.app : $(soundex.dir.include) ;
 

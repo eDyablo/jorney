@@ -1,0 +1,22 @@
+SubDir TOP jorney zmq hello cpp ;
+
+zmq.hello.cpp.dir.root = $(SUBDIR) ;
+
+SubInclude TOP jorney zmq hello cpp server ;
+SubInclude TOP jorney zmq hello cpp client ;
+SubInclude TOP jorney zmq hello cpp mtserver ;
+
+Depends zmq.hello.cpp :
+		zmq.hello.cpp.server.app
+		zmq.hello.cpp.client.app
+		zmq.hello.cpp.mtserver.app
+		;
+
+Depends clean : clean:zmq.hello.cpp :
+		clean:zmq.hello.cpp.server.app
+		clean:zmq.hello.cpp.client.app
+		clean:zmq.hello.cpp.mtserver.app
+		;
+
+MakeLocate zmq.hello.cpp : [ FDirName $(zmq.hello.cpp.dir.root) build $(PLATFORM) $(CONFIG) ] ;
+ZeroMQ.Use zmq.hello.cpp : install ;

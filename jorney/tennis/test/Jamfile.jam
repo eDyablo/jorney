@@ -9,7 +9,9 @@ C.IncludeDirectories tennis.test.app : $(tennis.dir.include) ;
 
 C.LinkLibraries : tennis.lib ;
 
-C.C++Flags tennis.test.app : -std=c++11 -stdlib=libc++ ;
+if $(MAC) = true {
+	C.C++Flags tennis.test.app : -std=c++11 -stdlib=libc++ ;
+}
 
 LOCATE_TARGET = [ FDirName $(SUBDIR) build $(PLATFORM) $(CONFIG) ] ;
 C.Application tennis.test.app : @($(SUBDIR)/src/**.cpp:W=$(SUBDIR)/) ;

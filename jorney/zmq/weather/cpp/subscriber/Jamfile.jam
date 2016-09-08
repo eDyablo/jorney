@@ -1,0 +1,9 @@
+SubDir TOP jorney zmq weather cpp subscriber ;
+
+zmq.weather.cpp.subscriber.dir.root = $(SUBDIR) ;
+
+ZeroMQ.Use zmq.weather.cpp.subscriber.app : link ;
+
+LOCATE_TARGET = [ FDirName $(zmq.weather.cpp.dir.root) build $(PLATFORM) $(CONFIG) ] ;
+C.Application zmq.weather.cpp.subscriber.app :
+		@($(zmq.weather.cpp.subscriber.dir.root)/main/src/**.cpp:W=$(zmq.weather.cpp.subscriber.dir.root)/) ;

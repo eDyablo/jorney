@@ -1,0 +1,21 @@
+SubDir TOP jorney zmq hello cpp mtserver ;
+
+zmq.hello.cpp.mtserver.dir.root = $(SUBDIR) ;
+
+ZeroMQ.Use zmq.hello.cpp.mtserver.app : link ;
+
+C.IncludeDirectories zmq.hello.cpp.mtserver.app :
+		$(zmq.basics.cpp.dir.include)
+		[ FDirName $(TOP) jorney shims include ]
+		;
+
+C.LinkLibraries zmq.hello.cpp.mtserver.app : zmq.basics.cpp.lib ;
+
+if $(MAC) = true {
+	C.C++Flags zmq.hello.cpp.mtserver.app : -std=c++11 -stdlib=libc++ ;
+}
+
+LOCATE_TARGET = [ FDirName $(zmq.hello.cpp.mtserver.dir.root) build $(PLATFORM) $(CONFIG) ] ;
+C.OutputPath zmq.hello.cpp.mtserver.app : [ FDirName $(zmq.hello.cpp.dir.root) build $(PLATFORM) $(CONFIG) ] ;
+C.Application zmq.hello.cpp.mtserver.app :
+		@($(zmq.hello.cpp.mtserver.dir.root)/main/src/**.cpp:W=$(zmq.hello.cpp.mtserver.dir.root)/) ;

@@ -1,0 +1,112 @@
+SubDir TOP jorney zmq ;
+
+zeromq.dir.root = [ FDirName $(TOP) zeromq ] ;
+zeromq.libzmq.dir.root = [ FDirName $(zeromq.dir.root) libzmq ] ;
+zeromq.libzmq.dir.include = [ FDirName $(zeromq.libzmq.dir.root) include ] ;
+zeromq.cppzmq.dir.include = [ FDirName $(zeromq.dir.root) cppzmq ] ;
+zeromq.clrzmq4.dir.root = [ FDirName $(zeromq.dir.root) clrzmq4 ] ;
+
+if $(PLATFORM) = win32
+{
+	if $(CONFIG) = release
+	{
+		zeromq.libzmq.dir.library = [ FDirName $(zeromq.libzmq.dir.root) bin Win32 Release v140 dynamic ] ;
+	}
+	if $(CONFIG) = debug
+	{
+		zeromq.libzmq.dir.library = [ FDirName $(zeromq.libzmq.dir.root) bin Win32 Debug v140 dynamic ] ;
+	}
+}
+if $(PLATFORM) = win64
+{
+	if $(CONFIG) = release
+	{
+		zeromq.libzmq.dir.library = [ FDirName $(zeromq.libzmq.dir.root) bin x64 Release v140 dynamic ] ;
+	}
+	if $(CONFIG) = debug
+	{
+		zeromq.libzmq.dir.library = [ FDirName $(zeromq.libzmq.dir.root) bin x64 Debug v140 dynamic ] ;
+	}
+}
+
+BINDING on libzmq.dll = [ FDirName $(zeromq.libzmq.dir.library) libzmq.dll ] ;
+BINDING on libzmq.pdb = [ FDirName $(zeromq.libzmq.dir.library) libzmq.pdb ] ;
+
+if $(PLATFORM) = macosx64
+{
+	zeromq.libzmq.dir.library = [ FDirName $(zeromq.libzmq.dir.root) bin macosx64 ] ;
+	BINDING on libzmq.dll = [ FDirName $(zeromq.libzmq.dir.library) libzmq.5.dylib ] ;
+}
+
+rule ZeroMQ.Use TARGET : OPTIONS : DIRECTORY
+{
+	DIRECTORY = $(DIRECTORY:E="") ;
+	C.IncludeDirectories $(TARGET) :
+		$(zeromq.cppzmq.dir.include)
+		$(zeromq.libzmq.dir.include)
+		;
+	if link in $(OPTIONS)
+	{
+		C.LinkDirectories $(TARGET) : $(zeromq.libzmq.dir.library)	;
+		local zmqLibName = zmq ;
+		if $(PLATFORM) in win32 win64
+		{
+			zmqLibName = libzmq ;
+		}
+		C.LinkPrebuiltLibraries $(TARGET) : $(zmqLibName) ;
+	}
+	if install in $(OPTIONS)
+	{
+		on $(TARGET) location = $(LOCATE) ;
+		CopyFile $(TARGET) : $(location)/$(DIRECTORY)/@(libzmq.dll:TBS) : @(libzmq.dll:T) ;
+		Clean clean:$(TARGET) : $(location)/$(DIRECTORY)/@(libzmq.dll:TBS) ;
+		if $(CONFIG) = debug
+		{
+			CopyFile $(TARGET) : $(location)/$(DIRECTORY)/@(libzmq.pdb:TBS) : @(libzmq.pdb:T) ;
+			Clean clean:$(TARGET) : $(location)/$(DIRECTORY)/@(libzmq.pdb:TBS) ;
+		}
+	}
+}
+
+BINDING on ZeroMQ.dll = [ FDirName $(zeromq.clrzmq4.dir.root) Release ZeroMQ.dll ] ;
+
+rule ZeroMQ.CLR.Use TARGET : OPTIONS
+{
+	if install in $(OPTIONS)
+	{
+		on $(TARGET) location = $(LOCATE) ;
+		CopyFile $(TARGET) : $(location)/@(ZeroMQ.dll:TBS) : @(ZeroMQ.dll:T) ;
+		Clean clean:$(TARGET) : $(location)/@(ZeroMQ.dll:TBS) ;
+		if $(PLATFORM) in win32 macosx32
+		{
+			ZeroMQ.Use $(TARGET) : install : i386 ;
+		}
+		if $(PLATFORM) in win64 macosx64
+		{
+			ZeroMQ.Use $(TARGET) : install : amd64 ;
+		}
+	}
+}
+
+if $(PLATFORM) in win32 macosx32
+{
+	csharp.flags = /platform:x86 ;
+}
+else if $(PLATFORM) in win64 macosx64
+{
+	csharp.flags = /platform:x64 ;
+}
+
+if $(OS) = MACOSX
+{
+	csharp.flags = $(CSC_COMPILER) $(csharp.flags) ;
+}
+
+zmq.dir.root = $(SUBDIR) ;
+
+SubInclude TOP jorney zmq basics ;
+SubInclude TOP jorney zmq hello ;
+SubInclude TOP jorney zmq weather ;
+SubInclude TOP jorney zmq parallel ;
+SubInclude TOP jorney zmq broker ;
+SubInclude TOP jorney zmq bridge ;

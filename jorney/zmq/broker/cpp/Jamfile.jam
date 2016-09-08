@@ -1,0 +1,20 @@
+SubDir TOP jorney zmq broker cpp ;
+
+zmq.broker.cpp.dir.root = $(SUBDIR) ;
+
+SubInclude TOP jorney zmq broker cpp simple ;
+SubInclude TOP jorney zmq broker cpp builtin ;
+
+Depends zmq.broker.cpp :
+		zmq.broker.cpp.simple.app
+		zmq.broker.cpp.builtin.app
+		;
+
+Depends clean : clean:zmq.broker.cpp :
+		clean:zmq.broker.cpp.simple.app
+		clean:zmq.broker.cpp.builtin.app
+		;
+
+MakeLocate zmq.broker.cpp :
+		[ FDirName $(zmq.broker.cpp.dir.root) build $(PLATFORM) $(CONFIG) ] ;
+ZeroMQ.Use zmq.broker.cpp : install ;

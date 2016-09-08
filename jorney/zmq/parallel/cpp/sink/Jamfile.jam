@@ -1,0 +1,13 @@
+SubDir TOP jorney zmq parallel cpp sink ;
+
+zmq.parallel.cpp.sink.dir.root = $(SUBDIR) ;
+
+ZeroMQ.Use zmq.parallel.cpp.sink.app : link ;
+
+if $(MAC) = true {
+	C.C++Flags zmq.parallel.cpp.sink.app : -std=c++11 -stdlib=libc++ ;
+}
+
+LOCATE_TARGET = [ FDirName $(zmq.parallel.cpp.dir.root) build $(PLATFORM) $(CONFIG) ] ;
+C.Application zmq.parallel.cpp.sink.app :
+		@($(zmq.parallel.cpp.sink.dir.root)/main/src/**.cpp:W=$(zmq.parallel.cpp.sink.dir.root)/) ;

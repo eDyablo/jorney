@@ -1,0 +1,14 @@
+SubDir TOP jorney zmq broker cpp builtin ;
+
+zmq.broker.cpp.builtin.dir.root = $(SUBDIR) ;
+
+ZeroMQ.Use zmq.broker.cpp.builtin.app : link ;
+
+C.IncludeDirectories zmq.broker.cpp.builtin.app : $(zmq.basics.cpp.dir.include) ;
+
+C.LinkLibraries zmq.broker.cpp.builtin.app : zmq.basics.cpp.lib ;
+
+LOCATE_TARGET = [ FDirName $(zmq.broker.cpp.builtin.dir.root) build $(PLATFORM) $(CONFIG) ] ;
+C.OutputPath zmq.broker.cpp.builtin.app : [ FDirName $(zmq.broker.cpp.dir.root) build $(PLATFORM) $(CONFIG) ] ;
+C.Application zmq.broker.cpp.builtin.app :
+		@($(zmq.broker.cpp.builtin.dir.root)/main/src/**.cpp:W=$(zmq.broker.cpp.builtin.dir.root)/) ;

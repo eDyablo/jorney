@@ -1,0 +1,19 @@
+SubDir TOP jorney zmq weather cpp ;
+
+zmq.weather.cpp.dir.root = $(SUBDIR) ;
+
+SubInclude TOP jorney zmq weather cpp publisher ;
+SubInclude TOP jorney zmq weather cpp subscriber ;
+
+Depends zmq.weather.cpp :
+		zmq.weather.cpp.publisher.app
+		zmq.weather.cpp.subscriber.app
+		;
+
+Depends clean : clean:zmq.weather.cpp :
+		clean:zmq.weather.cpp.publisher.app
+		clean:zmq.weather.cpp.subscriber.app
+		;
+
+MakeLocate zmq.weather.cpp : [ FDirName $(zmq.weather.cpp.dir.root) build $(PLATFORM) $(CONFIG) ] ;
+ZeroMQ.Use zmq.weather.cpp : install ;

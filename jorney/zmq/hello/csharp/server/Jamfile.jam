@@ -1,0 +1,13 @@
+SubDir TOP jorney zmq hello csharp server ;
+
+zmq.hello.csharp.server.dir.root = $(SUBDIR) ;
+
+CSharp.CscFlags zmq.hello.csharp.server.app : $(csharp.flags) ;
+
+CSharp.ReferencePaths zmq.hello.csharp.server.app : $(zeromq.clrzmq4.dir.root)/Release ;
+
+CSharp.ReferenceAssemblies zmq.hello.csharp.server.app : ZeroMQ.dll ;
+
+LOCATE_TARGET = [ FDirName $(zmq.hello.csharp.dir.root) build $(PLATFORM) $(CONFIG) ] ;
+CSharp.Application zmq.hello.csharp.server.app :
+		@($(zmq.hello.csharp.server.dir.root)/main/src/**.cs:W=$(zmq.hello.csharp.server.dir.root)/) ;
