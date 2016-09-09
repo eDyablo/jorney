@@ -1,0 +1,5 @@
+SubDir TOP jorney tact ;
+
+tact.dir.root = $(SUBDIR) ;
+
+SubInclude TOP jorney tact main ;

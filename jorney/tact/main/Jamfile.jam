@@ -1,0 +1,4 @@
+SubDir TOP jorney tact main ;
+
+tact.dir.include = [ FDirName $(SUBDIR) include ] ;
+tact.dir.src = [ FDirName $(SUBDIR) src ] ;
