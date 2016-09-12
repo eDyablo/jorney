@@ -1,0 +1,7 @@
+SubDir TOP jorney display ;
+
+display.dir.root = $(SUBDIR) ;
+
+if $(PLATFORM) in win32 win64 {
+  SubInclude TOP jorney display windows cpp main ;
+}
