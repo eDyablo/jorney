@@ -1,0 +1,8 @@
+SubDir TOP jorney ranges test ;
+
+GMock.Use ranges.test.app : link ;
+GTest.UseMain ranges.test.app ;
+
+C.IncludeDirectories ranges.test.app : $(ranges.dir.include) ;
+
+C.Application ranges.test.app : @($(SUBDIR)/src/**.cpp:W=$(SUBDIR)/) ;
