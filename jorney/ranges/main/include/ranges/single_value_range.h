@@ -32,11 +32,11 @@ namespace ranges {
   };
 
   template <typename V>
-  single_value_range_t<V> value_range(const V& value) {
+  single_value_range_t<V> value_range(V const& value) {
     return single_value_range_t<V>(value);
   }
 
-  single_value_range_t<std::string> value_range(const char* const value) {
+  single_value_range_t<std::string> value_range(char const* const value) {
     return value_range(std::string(value));
   }
 }

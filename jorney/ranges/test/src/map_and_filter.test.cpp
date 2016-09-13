@@ -11,9 +11,9 @@ using namespace ::testing;
 using namespace ::ranges;
 
 TEST(MapAndFilter, Can_map_filtered_range_that_has_values) {
-  const std::string words[] = {
+  std::string const words[] = {
       "The", "quick", "brown", "fox", "jumps", "over", "the", "lazy", "dog"};
-  const auto filter = [] (const std::string& s) {
+  auto const filter = [] (std::string const& s) {
     return s.find('o') != std::string::npos; };
   auto range = map_range<size_t>(std::mem_fun_ref(&std::string::length),
       filter_range(filter, make_range(words)));
@@ -21,7 +21,7 @@ TEST(MapAndFilter, Can_map_filtered_range_that_has_values) {
 }
 
 TEST(MapAndFilter, Can_filter_mapped_range_that_has_values) {
-  const std::string words[] = {
+  std::string const words[] = {
       "The", "quick", "brown", "fox", "jumps", "over", "the", "lazy", "dog"};
   auto range = filter_range(std::bind2nd(std::greater<size_t>(), 3),
       map_range<size_t>(std::mem_fun_ref(&std::string::length),
@@ -30,9 +30,9 @@ TEST(MapAndFilter, Can_filter_mapped_range_that_has_values) {
 }
 
 TEST(MapAndFilter, Can_map_filtered_range_that_has_no_values) {
-  const std::string words[] = {"The", "quick", "brown", "fox"};
+  std::string const words[] = {"The", "quick", "brown", "fox"};
   auto range = map_range<size_t>(std::mem_fun_ref(&std::string::length),
-      filter_range([](const std::string&) { return false; },
+      filter_range([](std::string const&) { return false; },
       make_range(words)));
   ASSERT_THAT(make_vector(range), IsEmpty());
 }

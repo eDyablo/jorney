@@ -7,8 +7,8 @@ namespace ranges {
     typedef V value_t;
 
   public:
-    incrementing_range_t(value_t begin)
-      : value(begin) {
+    incrementing_range_t(value_t begin):
+      value(begin) {
     }
 
     bool is_open() const {

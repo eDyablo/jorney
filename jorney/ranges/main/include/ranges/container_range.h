@@ -11,9 +11,9 @@ namespace ranges {
     typedef typename container_t::const_iterator iterator_t;
 
   public:
-    container_range_t(const container_t& container)
-      : iterator(container.begin())
-      , end(container.end()) {
+    container_range_t(container_t const& container):
+      iterator(container.begin()),
+      end(container.end()) {
     }
 
     bool is_open() const {
@@ -34,7 +34,7 @@ namespace ranges {
   };
 
   template <typename C>
-  container_range_t<C> container_range(const C& container) {
+  container_range_t<C> container_range(C const& container) {
     return container_range_t<C>(container);
   }
 }
