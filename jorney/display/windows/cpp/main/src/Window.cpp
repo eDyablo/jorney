@@ -1,6 +1,7 @@
 #include <windows.h>
 
-LRESULT CALLBACK DisplayWindowProcedure(HWND wnd, UINT msg, WPARAM wParam, LPARAM lParam) {
+LRESULT CALLBACK DisplayWindowProcedure(HWND wnd, UINT msg, WPARAM wParam,
+    LPARAM lParam) {
   switch(msg) {
     case WM_CLOSE:
       ::DestroyWindow(wnd);
@@ -24,9 +25,9 @@ HWND CreateDisplayWindow(HINSTANCE app) {
   WNDCLASS wc = { };
   wc.lpfnWndProc = DisplayWindowProcedure;
   wc.hInstance = app;
-  wc.lpszClassName = "edyablo.display";
+  wc.lpszClassName = "jorney.display";
   ::RegisterClass(&wc);
-  return ::CreateWindowEx(0, "edyablo.display", "Display", WS_OVERLAPPEDWINDOW,
-    CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, 0, 0, app, 0);
+  return ::CreateWindowEx(0, "jorney.display", "Display", WS_OVERLAPPEDWINDOW,
+      CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, 0, 0, app, 0);
   return 0;
 }

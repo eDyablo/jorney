@@ -2,6 +2,8 @@ SubDir TOP jorney display windows cpp main ;
 
 display.dir.main.cpp.src = $(SUBDIR) ;
 
+ZeroMQ.Use display.windows.cpp.app : link install ;
+
 C.LinkPrebuiltLibraries display.windows.cpp.app : user32 : : win32 win64 ;
 
 C.Application display.windows.cpp.app :
