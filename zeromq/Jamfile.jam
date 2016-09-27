@@ -57,7 +57,7 @@ rule ZeroMQ.Use TARGET : OPTIONS : DIRECTORY
 	}
 	if install in $(OPTIONS)
 	{
-		on $(TARGET) location = $(LOCATE) ;
+		on $(TARGET) location = $(LOCATE:E=$(TARGET:TD)) ;
 		CopyFile $(TARGET) : $(location)/$(DIRECTORY)/@(libzmq.dll:TBS) : @(libzmq.dll:T) ;
 		Clean clean:$(TARGET) : $(location)/$(DIRECTORY)/@(libzmq.dll:TBS) ;
 		if $(CONFIG) = debug
