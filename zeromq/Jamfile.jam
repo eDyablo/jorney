@@ -3,67 +3,85 @@ SubDir TOP zeromq ;
 zeromq.dir.root = [ FDirName $(TOP) zeromq ] ;
 zeromq.libzmq.dir.root = [ FDirName $(zeromq.dir.root) libzmq ] ;
 zeromq.libzmq.dir.include = [ FDirName $(zeromq.libzmq.dir.root) include ] ;
+zeromq.libzmq.dir.source = [ FDirName $(zeromq.libzmq.dir.root) src ] ;
 zeromq.cppzmq.dir.include = [ FDirName $(zeromq.dir.root) cppzmq ] ;
 zeromq.clrzmq4.dir.root = [ FDirName $(zeromq.dir.root) clrzmq4 ] ;
 
-if $(PLATFORM) = win32
+if $(PLATFORM) in win32 win64
 {
-	if $(CONFIG) = release
+	C.Defines libzmq :
+			_DLL
+			_UNICODE
+			_WIN32
+			_WINDLL
+			_WINSOCK_DEPRECATED_NO_WARNINGS
+			DLL_EXPORT
+			FD_SETSIZE=16384
+			UNICODE
+			WIN32
+			WIN32_LEAN_AND_MEAN
+			ZMQ_USE_SELECT
+			;
+
+	if $(PLATFORM) = win64
 	{
-		zeromq.libzmq.dir.library = [ FDirName $(zeromq.libzmq.dir.root) bin Win32 Release v140 dynamic ] ;
+		C.Defines libzmq :
+				_WIN64
+				WIN64
+				;
 	}
+
 	if $(CONFIG) = debug
 	{
-		zeromq.libzmq.dir.library = [ FDirName $(zeromq.libzmq.dir.root) bin Win32 Debug v140 dynamic ] ;
+		C.Defines libzmq :
+				_DEBUG
+				;
 	}
-}
-if $(PLATFORM) = win64
-{
-	if $(CONFIG) = release
-	{
-		zeromq.libzmq.dir.library = [ FDirName $(zeromq.libzmq.dir.root) bin x64 Release v140 dynamic ] ;
-	}
-	if $(CONFIG) = debug
-	{
-		zeromq.libzmq.dir.library = [ FDirName $(zeromq.libzmq.dir.root) bin x64 Debug v140 dynamic ] ;
-	}
+
+	C.IncludeDirectories libzmq : [ FDirName $(zeromq.libzmq.dir.root) builds msvc ] ;
+
+	C.LinkPrebuiltLibraries libzmq :
+			Advapi32.lib
+			Iphlpapi.lib
+			Ws2_32.lib
+			;
 }
 
-BINDING on libzmq.dll = [ FDirName $(zeromq.libzmq.dir.library) libzmq.dll ] ;
-BINDING on libzmq.pdb = [ FDirName $(zeromq.libzmq.dir.library) libzmq.pdb ] ;
+libzmq.binaries = [ C.Library libzmq :
+		@($(zeromq.libzmq.dir.source)/*.cpp:W=$(zeromq.dir.root)/) :
+		shared ] ;
 
-if $(PLATFORM) = macosx64
-{
-	zeromq.libzmq.dir.library = [ FDirName $(zeromq.libzmq.dir.root) bin macosx64 ] ;
-	BINDING on libzmq.dll = [ FDirName $(zeromq.libzmq.dir.library) libzmq.5.dylib ] ;
-}
+BINDING on libzmq.dll = $(libzmq.binaries[1]:T) ;
+BINDING on libzmq.lib = $(libzmq.binaries[2]:T) ;
+BINDING on libzmq.pdb = $(libzmq.binaries[1]:TS=.pdb) ;
+
+Depends libzmq.dll : @(libzmq.dll:T) : $(libzmq.binaries) ;
+Depends libzmq.lib : @(libzmq.lib:T) : $(libzmq.binaries) ;
+Depends libzmq.pdb : @(libzmq.pdb:T) : $(libzmq.binaries) ;
 
 rule ZeroMQ.Use TARGET : OPTIONS : DIRECTORY
 {
 	DIRECTORY = $(DIRECTORY:E="") ;
 	C.IncludeDirectories $(TARGET) :
-		$(zeromq.cppzmq.dir.include)
-		$(zeromq.libzmq.dir.include)
-		;
+			$(zeromq.cppzmq.dir.include)
+			$(zeromq.libzmq.dir.include)
+			;
 	if link in $(OPTIONS)
 	{
 		C.LinkDirectories $(TARGET) : $(zeromq.libzmq.dir.library)	;
-		local zmqLibName = zmq ;
-		if $(PLATFORM) in win32 win64
-		{
-			zmqLibName = libzmq ;
-		}
-		C.LinkPrebuiltLibraries $(TARGET) : $(zmqLibName) ;
+		C.LinkLibraries $(TARGET) : libzmq ;
 	}
 	if install in $(OPTIONS)
 	{
-		on $(TARGET) location = $(LOCATE:E=$(TARGET:TD)) ;
-		CopyFile $(TARGET) : $(location)/$(DIRECTORY)/@(libzmq.dll:TBS) : @(libzmq.dll:T) ;
-		Clean clean:$(TARGET) : $(location)/$(DIRECTORY)/@(libzmq.dll:TBS) ;
+		local location = $(LOCATE_TARGET) ;
+		local targetDll = [ FDirName $(location) $(DIRECTORY) @(libzmq.dll:TBS) ] ;
+		CopyFile $(TARGET) : $(targetDll) : @(libzmq.dll:T) ;
+		Clean clean:$(TARGET) : $(targetDll) ;
 		if $(CONFIG) = debug
 		{
-			CopyFile $(TARGET) : $(location)/$(DIRECTORY)/@(libzmq.pdb:TBS) : @(libzmq.pdb:T) ;
-			Clean clean:$(TARGET) : $(location)/$(DIRECTORY)/@(libzmq.pdb:TBS) ;
+			local targetPdb = [ FDirName $(location) $(DIRECTORY) @(libzmq.pdb:TBS) ] ;
+			CopyFile $(TARGET) : $(targetPdb) : @(libzmq.pdb:T) ;
+			Clean clean:$(TARGET) : $(targetPdb) ;
 		}
 	}
 }
