@@ -15,5 +15,4 @@ Depends clean : clean:zmq.hello.csharp :
 		clean:zmq.hello.csharp.client.app
 		;
 
-MakeLocate zmq.hello.csharp : [ FDirName $(zmq.hello.csharp.dir.root) build $(PLATFORM) $(CONFIG) ] ;
-ZeroMQ.CLR.Use zmq.hello.csharp : install ;
+#ZeroMQ.CLR.Use zmq.hello.csharp : install ;
