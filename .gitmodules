@@ -10,3 +10,6 @@
 [submodule "zeromq/cppzmq"]
 	path = zeromq/cppzmq
 	url = https://github.com/zeromq/cppzmq.git
+[submodule "zeromq/clrzmq4"]
+	path = zeromq/clrzmq4
+	url = https://github.com/zeromq/clrzmq4.git
