@@ -2,12 +2,11 @@ SubDir TOP jorney zmq parallel cpp ventilator ;
 
 zmq.parallel.cpp.ventilator.dir.root = $(SUBDIR) ;
 
-ZeroMQ.Use zmq.parallel.cpp.ventilator.app : link ;
+ZeroMQ.Use zmq.parallel.cpp.ventilator.app : link install ;
 
 C.IncludeDirectories zmq.parallel.cpp.ventilator.app : $(zmq.basics.cpp.dir.include) ;
 
 C.LinkLibraries zmq.parallel.cpp.ventilator.app : zmq.basics.cpp.lib ;
 
-LOCATE_TARGET = [ FDirName $(zmq.parallel.cpp.dir.root) build $(PLATFORM) $(CONFIG) ] ;
 C.Application zmq.parallel.cpp.ventilator.app :
 		@($(zmq.parallel.cpp.ventilator.dir.root)/main/src/**.cpp:W=$(zmq.parallel.cpp.ventilator.dir.root)/) ;

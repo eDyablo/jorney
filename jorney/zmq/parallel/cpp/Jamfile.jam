@@ -18,5 +18,4 @@ Depends clean : clean:zmq.parallel.cpp :
 		clean:zmq.parallel.cpp.sink.app
 		;
 
-MakeLocate zmq.parallel.cpp : [ FDirName $(zmq.parallel.cpp.dir.root) build $(PLATFORM) $(CONFIG) ] ;
 ZeroMQ.Use zmq.parallel.cpp : install ;

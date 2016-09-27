@@ -2,8 +2,6 @@ SubDir TOP jorney ;
 
 jorney.dir.root = $(SUBDIR) ;
 
-ALL_LOCATE_TARGET = [ FDirName $(TOP) jorney build ] ;
-
 SubInclude TOP jorney gtest ;
 SubInclude TOP jorney gmock ;
 SubInclude TOP jorney soundex ;
