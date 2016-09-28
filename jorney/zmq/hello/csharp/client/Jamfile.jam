@@ -6,7 +6,6 @@ CSharp.CscFlags zmq.hello.csharp.client.app : $(csharp.flags) ;
 
 CSharp.ReferencePaths zmq.hello.csharp.client.app : $(zeromq.clrzmq4.dir.root)/Release ;
 
-Depends zmq.hello.csharp.client.app : clrzmq ;
 ZeroMQ.CLR.Use zmq.hello.csharp.client.app : link install ;
 
 CSharp.Application zmq.hello.csharp.client.app :
