@@ -6,8 +6,7 @@ CSharp.CscFlags zmq.weather.csharp.publisher.app : $(csharp.flags) ;
 
 CSharp.ReferencePaths zmq.weather.csharp.publisher.app : $(zeromq.clrzmq4.dir.root)/Release ;
 
-CSharp.ReferenceAssemblies zmq.weather.csharp.publisher.app : ZeroMQ.dll ;
+ZeroMQ.CLR.Use zmq.weather.csharp.publisher.app : link install ;
 
-LOCATE_TARGET = [ FDirName $(zmq.weather.csharp.dir.root) build $(PLATFORM) $(CONFIG) ] ;
 CSharp.Application zmq.weather.csharp.publisher.app :
 		@($(zmq.weather.csharp.publisher.dir.root)/main/src/**.cs:W=$(zmq.weather.csharp.publisher.dir.root)/) ;

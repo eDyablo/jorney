@@ -6,8 +6,7 @@ CSharp.CscFlags zmq.parallel.csharp.worker.app : $(csharp.flags) ;
 
 CSharp.ReferencePaths zmq.parallel.csharp.worker.app : $(zeromq.clrzmq4.dir.root)/Release ;
 
-CSharp.ReferenceAssemblies zmq.parallel.csharp.worker.app : ZeroMQ.dll ;
+ZeroMQ.CLR.Use zmq.parallel.csharp.worker.app : link install ;
 
-LOCATE_TARGET = [ FDirName $(zmq.parallel.csharp.dir.root) build $(PLATFORM) $(CONFIG) ] ;
 CSharp.Application zmq.parallel.csharp.worker.app :
 		@($(zmq.parallel.csharp.worker.dir.root)/main/src/**.cs:W=$(zmq.parallel.csharp.worker.dir.root)/) ;

@@ -17,6 +17,3 @@ Depends clean : clean:zmq.parallel.csharp :
 		clean:zmq.parallel.csharp.worker.app
 		clean:zmq.parallel.csharp.sink.app
 		;
-
-MakeLocate zmq.parallel.csharp : [ FDirName $(zmq.parallel.csharp.dir.root) build $(PLATFORM) $(CONFIG) ] ;
-ZeroMQ.CLR.Use zmq.parallel.csharp : install ;

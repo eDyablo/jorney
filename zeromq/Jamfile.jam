@@ -90,22 +90,29 @@ CSharp.CscFlags clrzmq :
 		/unsafe
 		;
 
-clrzmq.binaries = [ CSharp.Assembly clrzmq :
+CSharp.Library clrzmq :
 		@($(zeromq.clrzmq4.dir.root)/*.cs:W=$(zeromq.dir.root)/)
 		@($(zeromq.clrzmq4.dir.root)/Devices/*.cs:W=$(zeromq.dir.root)/)
 		@($(zeromq.clrzmq4.dir.root)/lib/*.cs:W=$(zeromq.dir.root)/)
 		@($(zeromq.clrzmq4.dir.root)/Monitoring/*.cs:W=$(zeromq.dir.root)/)
-		: library ] ;
+		;
 
-BINDING on ZeroMQ.dll = [ FDirName $(zeromq.clrzmq4.dir.root) Release ZeroMQ.dll ] ;
+BINDING on clrzmq.dll = [ FDirName [ CSharp._retrieveOutputPath clrzmq ] [ CSharp._retrieveOutputName clrzmq : $(SUFSHAREDLIB:Z=$(C.COMPILER_SUITE_SYMBOL)) ] ] ;
+
+Depends clrzmq.dll : @(clrzmq.dll:T) : clrzmq ;
 
 rule ZeroMQ.CLR.Use TARGET : OPTIONS
 {
+	TAREGT = [ C.ActiveTarget $(TARGET) ] ;
+	if link in $(OPTIONS)
+	{
+		CSharp.ReferenceAssemblies $(TARGET) : @(clrzmq.dll:T) ;
+	}
 	if install in $(OPTIONS)
 	{
 		local location = $(LOCATE_TARGET) ;
-		CopyFile $(TARGET) : $(location)/@(ZeroMQ.dll:TBS) : @(ZeroMQ.dll:T) ;
-		Clean clean:$(TARGET) : $(location)/@(ZeroMQ.dll:TBS) ;
+		CopyFile $(TARGET) : $(location)/@(clrzmq.dll:TBS) : @(clrzmq.dll:T) ;
+		Clean clean:$(TARGET) : $(location)/@(clrzmq.dll:TBS) ;
 		if $(PLATFORM) in win32 macosx32
 		{
 			ZeroMQ.Use $(TARGET) : install : i386 ;

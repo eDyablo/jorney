@@ -6,8 +6,7 @@ CSharp.CscFlags zmq.parallel.csharp.ventilator.app : $(csharp.flags) ;
 
 CSharp.ReferencePaths zmq.parallel.csharp.ventilator.app : $(zeromq.clrzmq4.dir.root)/Release ;
 
-CSharp.ReferenceAssemblies zmq.parallel.csharp.ventilator.app : ZeroMQ.dll ;
+ZeroMQ.CLR.Use zmq.parallel.csharp.ventilator.app : link install ;
 
-LOCATE_TARGET = [ FDirName $(zmq.parallel.csharp.dir.root) build $(PLATFORM) $(CONFIG) ] ;
 CSharp.Application zmq.parallel.csharp.ventilator.app :
 		@($(zmq.parallel.csharp.ventilator.dir.root)/main/src/**.cs:W=$(zmq.parallel.csharp.ventilator.dir.root)/) ;
